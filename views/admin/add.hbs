@@ -1,0 +1,99 @@
+<div class="pagetitle">
+  <h1>Productos</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/admin/products">Productos</a></li>
+      <li class="breadcrumb-item active">Add</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+<form action="/admin/products/add" method="post" enctype="multipart/form-data">
+  <div class="container">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Titulo</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" name="titulo" />
+    </div>
+    <div class="mb-3 row row-cols-5">
+      <div class="col">
+        <label for="exampleFormControlInput1" class="form-label">Codigo</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" name="codigo"/>
+      </div>
+      <div class="col">
+        <label for="exampleFormControlInput1" class="form-label">Stock</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" name="stock" />
+      </div>
+      <div class="col">
+        <label for="exampleFormControlInput1" class="form-label">Precio</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1"  name="precio"/>
+      </div>
+      <div class="col">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >categoria</label>
+        <select class="form-select" aria-label="Default select example" name="categoria">
+          <option value="water">agua</option>
+          <option value="sound">sonido</option>
+          <option value="both">ambos</option>
+        </select>
+      </div>
+      <div class="col">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >calificacion</label>
+        <span>4.9</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label
+        for="exampleFormControlTextarea1"
+        class="form-label"
+      >Descripcion</label>
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="8"
+        name="descripcion"
+      ></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Items</label>
+      <div class="row row-cols-3">
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item1" placeholder="1."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item2" placeholder="2."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item3" placeholder="3."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item4" placeholder="4."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item5" placeholder="5."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item6" placeholder="6."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item7" placeholder="7."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item8" placeholder="8."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item9" placeholder="9."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item10" placeholder="10."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item11" placeholder="11."/></div>
+        <div class="col my-1"><input type="text" class="form-control" id="exampleFormControlInput1" name="item12" placeholder="12."/></div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Indicaciones
+        de uso</label>
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="8"
+        name="indicaciones"
+      ></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Imagenes</label>
+      <input class="form-control" type="file" id="img" name="imagen"/>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  {{#if error}}
+    <div class="alert alert-danger" role="alert">
+  {{message}}
+</div>
+  {{/if}}
+</form>

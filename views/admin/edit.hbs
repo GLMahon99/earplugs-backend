@@ -1,0 +1,142 @@
+<div class="pagetitle">
+  <h1>Productos</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/admin/products">Productos</a></li>
+      <li class="breadcrumb-item active">Edit</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+<form action="/admin/products/edit" method="post" enctype="multipart/form-data">
+  <input type="hidden" value="{{producto.producto_id}}" name="id" />
+  <div class="container">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Titulo</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput1"
+        name="titulo"
+        value="{{producto.titulo}}"
+      />
+    </div>
+    <div class="mb-3 row row-cols-5">
+      <div class="col">
+        <label for="exampleFormControlInput1" class="form-label">Codigo</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="codigo"
+          value="{{producto.codigo}}"
+        />
+      </div>
+      <div class="col">
+        <label for="exampleFormControlInput1" class="form-label">Stock</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="stock"
+          value="{{producto.stock}}"
+        />
+      </div>
+      <div class="col">
+        <label for="exampleFormControlInput1" class="form-label">Precio</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="precio"
+          value="{{producto.precio}}"
+        />
+      </div>
+      <div class="col">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >categoria</label>
+        <select
+          class="form-select"
+          aria-label="{{producto.categoria}}"
+          name="categoria"
+        >
+          <option value="water">agua</option>
+          <option value="sound">sonido</option>
+          <option value="both">ambos</option>
+        </select>
+      </div>
+      <div class="col">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >calificacion</label>
+        <span>4.9</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label
+        for="exampleFormControlTextarea1"
+        class="form-label"
+      >Descripcion</label>
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="8"
+        name="descripcion"
+      >{{producto.descripcion}}</textarea>
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Items</label>
+      <div class="row row-cols-3">
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item1" value="{{producto.item1}}" />
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item2" value="{{producto.item2}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item3" value="{{producto.item3}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item4" value="{{producto.item4}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item5" value="{{producto.item5}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item6" value="{{producto.item6}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item7" value="{{producto.item7}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item8" value="{{producto.item8}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item9" value="{{producto.item9}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item10" value="{{producto.item10}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item11" value="{{producto.item11}}"/>
+         <input type="text" class="form-control my-1" id="exampleFormControlInput1" name="item12" value="{{producto.item12}}"/>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Indicaciones
+        de uso</label>
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="8"
+        name="indicaciones"
+      >{{producto.indicaciones}}</textarea>
+    </div>
+    <span>Comentarios</span>
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Imagen</label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="1"
+          id="flexCheckDefault"
+          name="img_delete"
+        />
+        <label class="form-check-label" for="flexCheckDefault">
+          Eliminar imagen actual
+        </label>
+      </div>
+      <input class="form-control" type="file" id="formFile" name="imagen" />
+      <input type="hidden" name="img_original" value="{{product.img_id}}">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  {{#if error}}
+    <div class="alert alert-danger" role="alert">
+      {{message}}
+    </div>
+  {{/if}}
+</form>

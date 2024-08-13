@@ -1,0 +1,55 @@
+<div class="pagetitle">
+  <h1>Envios</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item active">Envios</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+
+<form action="/admin/shipping/edit" method="post">
+  <table class="table table-striped-columns">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Localidad</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each shipp}}
+    <tr>
+      <input type="hidden" value="{{id}}" name="id" />
+      <td>{{id}}</td>
+      <td>{{city}}</td>
+      <td>
+        <div>
+          ${{price}}
+        </div>
+          <div class="d-flex flex-column mt-2">
+            <span>Modifique el precio de envío</span>
+            <input class="mx-3 form-control w-25" type="text" value="{{price}}" name="NewPrice" placeholder="Ingrese costo de envio">
+          </div>
+          
+        </td>
+        <td>
+        <a class="btn" href="/admin/shipping/delete/{{id}}"><i class="bi bi-trash"></i></a>
+        </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<div class="d-flex justify-content-between">
+<a href="/admin/shipping/addShipp" class="btn btn-success">
+    Agregar Envío
+    <i class="bi bi-plus-square"></i>
+</a>
+<button class="btn btn-primary" type="submit">Actualizar Precios</button>
+</div>
+
+</form>
+
+</div>

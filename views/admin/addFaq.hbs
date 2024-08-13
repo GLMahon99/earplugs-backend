@@ -1,0 +1,58 @@
+<div class="pagetitle">
+  <h1>Preguntas Frecuentes</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/admin/faq">Preguntas Frecuentes</a></li>
+      <li class="breadcrumb-item active">Agregar</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<div class="container">
+  <form action="/admin/faq/addFaq" method="post">
+    <div class="my-4">
+      <div class="mb-1">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >Número</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="numero"
+        />
+      </div>
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >Pregunta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="pregunta"
+        />
+      </div>
+      <div class="mb-1">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >Respuesta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="respuesta"
+        />
+      </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    {{#if error}}
+        <div class="alert alert-danger" role="alert">
+            {{message}}
+        </div>
+    {{/if}}
+  </form>

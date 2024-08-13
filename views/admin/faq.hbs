@@ -1,0 +1,39 @@
+<div class="pagetitle">
+  <h1>Preguntas Frecuentes</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item active">Preguntas Frecuentes</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+
+
+  <table class="table table-striped-columns">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Pregunta</th>
+      <th scope="col">Respuesta</th>
+      <th scope="col">Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each faq}}
+    <tr>
+      <td>{{numero}}</td>
+      <td>{{pregunta}}</td>
+      <td>{{respuesta}}</td>
+        <td>
+        <a class="btn" href="/admin/faq/delete/{{faq_id}}"><i class="bi bi-trash"></i></a>
+        </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<a href="/admin/faq/addFaq" class="btn btn-success">
+    Agregar Pregunta
+    <i class="bi bi-plus-square"></i>
+</a>
+</div>

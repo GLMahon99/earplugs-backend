@@ -1,0 +1,28 @@
+<div class="pagetitle">
+  <h1>Imagenes</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item active">Imagenes</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<div class="container">
+    <div class="row row-cols-4">
+        {{#each images}}
+        <div class="col my-3">
+            <div class="">
+                <div class=""><h5>{{categoria}}</h5></div>
+                
+            </div>
+            
+            {{{imagen}}}
+            <div class="my-1"><a class="btn btn-danger" href="/admin/images/delete/{{img_id}}">Eliminar<i class="bi bi-trash"></i></a></div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<div>
+    <a class="btn btn-primary" href="/admin/images/addImages">Agregar imagen</a>
+</div>

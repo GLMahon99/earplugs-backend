@@ -1,0 +1,42 @@
+<div class="pagetitle">
+  <h1>Productos</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<div>
+    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Codigo </th>
+      <th scope="col"><i class="bi bi-image"></i></th>
+      <th scope="col">Stock</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Editar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+    <tr>
+      <td>{{codigo}}</td>
+      <td>{{{imagen}}}</td>
+      <td>{{stock}}</td>
+      <td><i class="bi bi-currency-dollar"></i>{{precio}}</td>
+      <td>
+        <a class="btn" href="/admin/products/edit/{{producto_id}}"><i class="bi bi-pencil-square"></i></a>
+        <a class="btn" href="/admin/products/delete/{{producto_id}}"><i class="bi bi-trash"></i></a>
+        </td>
+    </tr>
+    {{/each}}
+    
+  </tbody>
+</table>
+<a href="/admin/products/add" class="btn btn-success">
+    Agregar producto
+    <i class="bi bi-plus-square"></i>
+</a>
+</div>

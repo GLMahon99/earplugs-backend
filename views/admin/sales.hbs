@@ -1,0 +1,171 @@
+<div class="pagetitle">
+  <h1>Ventas</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item active">Ventas</li>
+    </ol>
+  </nav>
+
+  <div class="container" id="sales">
+            {{#each sales}}
+            <div class="rounded shadow-sm d-flex flex-column container-sales justify-content-center align-items-center mb-5"  id="printSection-{{pedido_id}}">
+                <div class="row row-cols-5 container header-container-sales rounded-top shadow-sm">
+                    <div class="col d-flex justify-content-center">#{{pedido_id}}</div>
+                    <div class="col d-flex justify-content-center">{{fecha_pedido}}</div>
+                    <div class="col d-flex justify-content-center">{{client.nombre}} {{client.apellido}}</div>
+                    <div class="col d-flex justify-content-center"><i class="bi bi-telephone">{{client.telefono}}</i></div>
+                    <div class="col d-flex justify-content-center"><i class="bi bi-envelope">{{client.email}}</i></div>
+                </div>
+                <div class="row container mb-3">
+                    <div class="detail-sale" >
+                        <div class="d-flex justify-content-between mb-1">
+                            <h4>Detalle</h4>
+                            <h6>{{forma_pago}}</h6>
+                            <button class="printButton btn btn-warning" data-print-id="printSection-{{pedido_id}}"><i class="bi bi-printer"></i></button>
+                        </div>
+                        {{!-- Recorrido del detail --}}
+                        {{#each detail}}
+                        <div class="item-detail-sales row d-flex justify-content-center rounded align-items-center">
+                            <div class="col-2 d-flex justify-content-center"><img src="{{img}}" alt="" class="img-item-detail"></div>
+                            <div class="col-2">{{code}}</div>
+                            <div class="col-4">{{title}}</div>
+                            <div class="col-2 d-flex justify-content-center">{{quantity}} unidades</div>
+                            <div class="col-2 d-flex justify-content-center">${{price}}</div>
+                        </div>
+                        {{/each}}
+                        {{!-- Fin recorrido del detail --}}
+                    </div>
+                </div>
+                <div class="row row-cols-3 container">
+                    <div class="col container-data-sale rounded">
+                        <h4 class="title-data-sale">Datos de envío</h4>
+                        <div class="row item-data-sale">
+                            <div class="col-6">Dirección:</div>
+                            <div class="col-6">{{direccion_envio}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-6">CP:</div>
+                            <div class="col-6">{{cp}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-6">Localidad:</div>
+                            <div class="col-6">{{localidad}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-6">Piso:</div>
+                            <div class="col-6">{{piso}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-6">Puerta:</div>
+                            <div class="col-6">{{puerta}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-6">Tipo de vivienda:</div>
+                            <div class="col-6">{{tipo_vivienda}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-6">Observación:</div>
+                            <div class="col-6">{{observacion}}</div>
+                        </div>
+                    </div>
+                    <div class="col container-data-sale rounded">
+                        <h4 class="title-data-sale">Datos de facturación</h4>
+                        <div class="row item-data-sale">
+                            <div class="col-8">Tipo de documentación:</div>
+                            <div class="col-4">{{client.tipo_identificacion}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-8">Numero de Documentación:</div>
+                            <div class="col-4">{{client.numero_identificacion}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-8">Condicion IVA:</div>
+                            <div class="col-4">{{client.condicion_iva}}</div>
+                        </div>
+                    </div>
+                    <div class="col container-data-sale rounded">
+                        <h4 class="text-align-center title-data-sale">Total</h4>
+                        <div class="row item-data-sale">
+                            <div class="col-8">Total de venta</div>
+                            <div class="col-4 price-sale">${{pedido_total}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-8"><i class="bi bi-truck">Envío</i></div>
+                            <div class="col-4 price-shipping">${{envio_precio}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-8">Cargos por venta (4,39%)</div>
+                            <div class="col-4 commission">-${{commission}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-8">Impuestos</div>
+                            <div class="col-4">-${{tax}}</div>
+                        </div>
+                        <div class="row item-data-sale">
+                            <div class="col-8"><strong>Total</strong></div>
+                            <div class="col-4 total"><strong>${{total}}</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-state">
+                    <form action="/admin/sales/editState" method="post">
+                        <input type="hidden" value="{{pedido_id}}" name="id" />
+                        <input type="hidden" value="{{cliente_id}}" name="clientId" />
+                        <strong >Estado:</strong> <span class="state">{{estado}}</span>
+                        <div class="selector-state ">
+                            <select name="estado" class="form-select my-1">
+                            <option value="aprobado">Aprobar</option>
+                            <option value="rechazado">Rechazar</option>
+                        </select>
+                        <button type="submit" class="btn mx-2" id="button-state-acept">Actualizar estado</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            {{/each}}
+  </div>
+</div><!-- End Page Title -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.printButton').forEach(button => {
+        button.addEventListener('click', function () {
+            const printId = button.getAttribute('data-print-id');
+            const printContent = document.getElementById(printId).innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload(); // Refresh to restore the original content
+        });
+    });
+});
+
+const containerState = document.querySelectorAll('.container-state');
+containerState.forEach((elemento) => {
+  const state = elemento.querySelector('.state'); // Supongamos que tienes un elemento con clase "state"
+  const selectorState = elemento.querySelector('.selector-state');
+
+  console.log("este es el estado:" , state);
+
+  if (state && state.textContent.trim() !== 'pendiente' && state.textContent.trim() === 'aprobado') {
+    selectorState.style.display = 'none'; // Oculta el elemento si el estado no es "pendiente"
+    state.style.color = 'green';
+  }else if (state && state.textContent.trim() !== 'pendiente' && state.textContent.trim() === 'rechazado') {
+       selectorState.style.display = 'none'; 
+       state.style.color = 'red';
+    } 
+});
+
+const dataSale = document.querySelectorAll('.container-data-sale');
+dataSale.forEach((e) => {
+    let commission = e.querySelector('.price-sale');
+    
+})
+
+
+
+
+    </script>

@@ -1,0 +1,47 @@
+<div class="pagetitle">
+  <h1>Envios</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/admin/shipping">Envios</a></li>
+      <li class="breadcrumb-item active">Agregar</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<div class="container">
+  <form action="/admin/shipping/addShipp" method="post">
+    <div class="my-4">
+      
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >Localidad</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="city"
+        />
+      </div>
+      <div class="mb-1">
+        <label
+          for="exampleFormControlInput1"
+          class="form-label"
+        >Precio</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          name="price"
+        />
+      </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    {{#if error}}
+        <div class="alert alert-danger" role="alert">
+            {{message}}
+        </div>
+    {{/if}}
+  </form>
