@@ -29,6 +29,8 @@ router.get('/', async function(req, res, next) {
       } catch (e) {
         saleDetails = []; // Si no es un JSON válido, asignar un array vacío
       }
+      
+      console.log("este es el total del pedido", sale.pedido_total);
 
       const commission = (sale.pedido_total * 0.0439).toFixed(2);
       const tax = (sale.pedido_total * 0.0020).toFixed(2);
