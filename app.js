@@ -22,6 +22,14 @@ const { config } = require('dotenv');
 
 var app = express();
 
+// 🛡️ CORS configurado para desarrollo y producción
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://earplugs.com.ar'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -50,7 +58,7 @@ secured = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 app.use(fileUpLoad({
   useTempFiles: true,
@@ -65,7 +73,7 @@ app.use('/admin/sales', salesRouter);
 app.use('/admin/faq', faqRouter);
 app.use('/admin/images', imagesRouter);
 app.use('/admin/shipping', shippingRouter);
-app.use('/api', cors(), apiRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
