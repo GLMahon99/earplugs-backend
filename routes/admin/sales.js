@@ -30,16 +30,18 @@ sales = sales.map(sale => {
     saleDetails = []; // Si no es un JSON válido, asignar un array vacío
   }
 
-  console.log("este es el total del pedido", sale.pedido_total);
+console.log("este es el total del pedido", sale.pedido_total, typeof sale.pedido_total);
+console.log("este es el precio del envío", sale.envio_precio, typeof sale.envio_precio);
+
 
   // Definir comisión y tax según forma de pago
   let commission = sale.forma_pago === 'transferencia'
     ? 0
-    : sale.pedido_total * 0.0439;
+    : (sale.pedido_total + sale.envio_precio) * 0.0439;
 
   let tax = sale.forma_pago === 'transferencia'
     ? 0
-    : sale.pedido_total * 0.0020;
+    : (sale.pedido_total + sale.envio_precio) * 0.0020;
 
   // Redondear a 2 decimales sin cambiar a string
   commission = Math.round(commission * 100) / 100;
