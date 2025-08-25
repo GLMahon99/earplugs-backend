@@ -33,15 +33,21 @@ sales = sales.map(sale => {
   console.log("este es el total del pedido", sale.pedido_total);
 
   // Definir comisión y tax según forma de pago
-  const commission = sale.forma_pago === 'transferencia'
+  let commission = sale.forma_pago === 'transferencia'
     ? 0
-    : (sale.pedido_total * 0.0439).toFixed(2);
+    : sale.pedido_total * 0.0439;
 
-  const tax = sale.forma_pago === 'transferencia'
+  let tax = sale.forma_pago === 'transferencia'
     ? 0
-    : (sale.pedido_total * 0.0020).toFixed(2);
+    : sale.pedido_total * 0.0020;
 
-  const total = (sale.pedido_total + sale.envio_precio - commission - tax).toFixed(2);
+  // Redondear a 2 decimales sin cambiar a string
+  commission = Math.round(commission * 100) / 100;
+  tax = Math.round(tax * 100) / 100;
+
+  // Calcular total
+  let total = sale.pedido_total + sale.envio_precio - commission - tax;
+  total = Math.round(total * 100) / 100;
 
   const detailSale = saleDetails.map(item => ({
     img: cloudinary.url(item.img),
