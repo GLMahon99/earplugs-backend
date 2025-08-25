@@ -18,41 +18,48 @@ router.get('/', async function(req, res, next) {
     // console.log("este es el detalle de la compra:", detail);
 
     // Agregar información de client y salesDetail a cada venta
-    sales = sales.map(sale => {
-      // Encontrar el cliente correspondiente
-      const clientInfo = clients.find(client => client.cliente_id === sale.cliente_id);
-      
-      // Asegurarse de que sale.detalle sea un array
-      let saleDetails;
-      try {
-        saleDetails = JSON.parse(sale.detalle);
-      } catch (e) {
-        saleDetails = []; // Si no es un JSON válido, asignar un array vacío
-      }
-      
-      console.log("este es el total del pedido", sale.pedido_total);
+sales = sales.map(sale => {
+  // Encontrar el cliente correspondiente
+  const clientInfo = clients.find(client => client.cliente_id === sale.cliente_id);
+  
+  // Asegurarse de que sale.detalle sea un array
+  let saleDetails;
+  try {
+    saleDetails = JSON.parse(sale.detalle);
+  } catch (e) {
+    saleDetails = []; // Si no es un JSON válido, asignar un array vacío
+  }
 
-      const commission = (sale.pedido_total * 0.0439).toFixed(2);
-      const tax = (sale.pedido_total * 0.0020).toFixed(2);
-      const total = (sale.pedido_total + sale.envio_precio - commission - tax).toFixed(2);
+  console.log("este es el total del pedido", sale.pedido_total);
 
-      const detailSale = saleDetails.map(item => ({
-        img: cloudinary.url(item.img),
-        code: item.codigo,
-        price: item.precio,
-        title: item.titulo,
-        quantity: item.quantity
-      }));
+  // Definir comisión y tax según forma de pago
+  const commission = sale.forma_pago === 'transferencia'
+    ? 0
+    : (sale.pedido_total * 0.0439).toFixed(2);
 
-      return {
-        ...sale,
-        client: clientInfo,
-        detail: detailSale,
-        commission: commission,
-        tax: tax,
-        total: total
-      };
-    });
+  const tax = sale.forma_pago === 'transferencia'
+    ? 0
+    : (sale.pedido_total * 0.0020).toFixed(2);
+
+  const total = (sale.pedido_total + sale.envio_precio - commission - tax).toFixed(2);
+
+  const detailSale = saleDetails.map(item => ({
+    img: cloudinary.url(item.img),
+    code: item.codigo,
+    price: item.precio,
+    title: item.titulo,
+    quantity: item.quantity
+  }));
+
+  return {
+    ...sale,
+    client: clientInfo,
+    detail: detailSale,
+    commission: commission,
+    tax: tax,
+    total: total
+  };
+});
 
     // console.log("este es el resultado de sales:", sales);
     res.render('admin/sales', {
