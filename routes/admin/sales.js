@@ -30,26 +30,24 @@ sales = sales.map(sale => {
     saleDetails = []; // Si no es un JSON válido, asignar un array vacío
   }
 
-console.log("este es el total del pedido", sale.pedido_total, typeof sale.pedido_total);
-console.log("este es el precio del envío", sale.envio_precio, typeof sale.envio_precio);
+const pedidoTotalNum = Number(sale.pedido_total);
+const envioPrecioNum = Number(sale.envio_precio);
 
+// luego calculas comisión, tax y total usando estos números
+let commission = sale.forma_pago === 'transferencia'
+  ? 0
+  : (pedidoTotalNum + envioPrecioNum) * 0.0439;
 
-  // Definir comisión y tax según forma de pago
-  let commission = sale.forma_pago === 'transferencia'
-    ? 0
-    : (sale.pedido_total + sale.envio_precio) * 0.0439;
+let tax = sale.forma_pago === 'transferencia'
+  ? 0
+  : (pedidoTotalNum + envioPrecioNum) * 0.0020;
 
-  let tax = sale.forma_pago === 'transferencia'
-    ? 0
-    : (sale.pedido_total + sale.envio_precio) * 0.0020;
+// redondear sin cambiar a string
+commission = Math.round(commission * 100) / 100;
+tax = Math.round(tax * 100) / 100;
 
-  // Redondear a 2 decimales sin cambiar a string
-  commission = Math.round(commission * 100) / 100;
-  tax = Math.round(tax * 100) / 100;
-
-  // Calcular total
-  let total = sale.pedido_total + sale.envio_precio - commission - tax;
-  total = Math.round(total * 100) / 100;
+let total = pedidoTotalNum + envioPrecioNum - commission - tax;
+total = Math.round(total * 100) / 100;
 
   const detailSale = saleDetails.map(item => ({
     img: cloudinary.url(item.img),
