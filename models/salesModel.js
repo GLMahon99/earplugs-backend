@@ -1,49 +1,48 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
+// Obtener todas las ventas
 async function getSales() {
-    var query = `
-    SELECT *
-FROM pedidos
-ORDER BY pedido_id DESC
-  
-  
-  `;
-    var rows = await pool.query(query);
+    const query = `SELECT * FROM pedidos ORDER BY pedido_id DESC`;
+    const rows = await pool.query(query);
     return rows;
 }
 
+// Obtener detalle de ventas (solo el JSON detalle)
 async function getDetailSales() {
-  var query = `
-  SELECT
-  detalle
-FROM pedidos
-`;
-  var rows = await pool.query(query);
-  return rows;
+    const query = `SELECT detalle FROM pedidos`;
+    const rows = await pool.query(query);
+    return rows;
 }
 
-async function getClient() {
-  var query = 'select * from clientes';
-  var rows = await pool.query(query);
-  return rows;
+// Obtener todos los clientes (ahora de la tabla usuarios)
+async function getClients() {
+    const query = `SELECT * FROM usuarios WHERE rol='cliente'`;
+    const rows = await pool.query(query);
+    return rows;
 }
 
+// Obtener pedido por ID
 async function getSalesById(id) {
-  var query = 'select * from pedidos where pedido_id = ?';
-  var rows = await pool.query(query, [id]);
-  return rows[0];
+    const query = `SELECT * FROM pedidos WHERE pedido_id = ?`;
+    const rows = await pool.query(query, [id]);
+    return rows[0];
 }
 
-async function editStateSaleById(obj, id) {
-  console.log('Valores recibidos: pedidoId =', id, ', nuevoEstado =', obj);
-
-  try {
-      var query = 'UPDATE pedidos SET estado = ? where pedido_id = ?';
-      var rows = await pool.query(query, [obj,id]);
-      return rows;
-  } catch (error) {
-      throw error;
-  }
+// Editar estado de pedido
+async function editStateSaleById(estado, id) {
+    try {
+        const query = 'UPDATE pedidos SET estado = ? WHERE pedido_id = ?';
+        const rows = await pool.query(query, [estado, id]);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
 }
 
-module.exports = {getSales, getDetailSales, getClient, editStateSaleById, getSalesById};
+module.exports = {
+    getSales,
+    getDetailSales,
+    getClients,
+    getSalesById,
+    editStateSaleById
+};
