@@ -95,7 +95,7 @@ router.post('/editState', async (req, res) => {
   const clientId = req.body.clientId;
 
   try {
-    const clients = await salesModel.getClient();
+    const clients = await salesModel.getClients();
 
     // Verificación de datos
     console.log('Datos de clientes:', clients);
