@@ -111,7 +111,7 @@
                 <div class="container-state">
                     <form action="/admin/sales/editState" method="post">
                         <input type="hidden" value="{{pedido_id}}" name="id" />
-                        <input type="hidden" value="{{cliente_id}}" name="clientId" />
+                        <input type="hidden" value="{{client.id}}" name="clientId" />
                         <strong >Estado:</strong> <span class="state">{{estado}}</span>
                         <div class="selector-state ">
                             <select name="estado" class="form-select my-1">
