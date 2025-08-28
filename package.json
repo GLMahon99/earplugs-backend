@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bootstrap-icons": "^1.11.1",
     "cloudinary": "^1.41.0",
     "cookie-parser": "~1.4.4",
