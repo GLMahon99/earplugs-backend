@@ -20,7 +20,8 @@ router.get('/', async function(req, res, next) {
     // Agregar información de client y salesDetail a cada venta
 sales = sales.map(sale => {
   // Encontrar el cliente correspondiente
-  const clientInfo = clients.find(client => client.cliente_id === sale.cliente_id);
+  const clientInfo = clients.find(client => client.id === sale.cliente_id);
+
   
   // Asegurarse de que sale.detalle sea un array
   let saleDetails;
@@ -101,7 +102,8 @@ router.post('/editState', async (req, res) => {
     console.log('ID del cliente recibido:', clientId);
 
     // Usar === si ambos son del mismo tipo; == si uno es string y otro es number
-    const clientData = clients.find(client => client.cliente_id == clientId);
+    const clientData = clients.find(client => client.id == clientId);
+
 
     if (!clientData) {
       console.error('Cliente no encontrado para ID:', clientId);
