@@ -7,7 +7,7 @@ var cloudinary = require('cloudinary').v2;
 router.get('/', async function(req, res, next) {
   try {
     var sales = await salesModel.getSales();
-    var clients = await salesModel.getClient();
+    var clients = await salesModel.getClients();
     // var detail = await salesModel.getDetailSales();
 
     // Convertir RowDataPackets a objetos simples
