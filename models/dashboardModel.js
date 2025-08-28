@@ -43,12 +43,15 @@ async function getIncome() {
 }
 
 async function getClients() {
-    var query = `
-    SELECT cliente_id 
-    FROM clientes`;
-    var rows = await pool.query(query);
+    const query = `
+        SELECT id, nombre, apellido, email
+        FROM usuarios
+        WHERE rol='cliente'
+    `;
+    const rows = await pool.query(query);
     return rows;
 }
+
 
 
 module.exports = {getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale}
