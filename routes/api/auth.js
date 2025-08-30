@@ -6,11 +6,25 @@ var jwt = require('jsonwebtoken');
 // 🟢 Registro de cliente
 router.post('/register', async (req, res) => {
   try {
-    const userId = await usuariosModel.createClient(req.body);
-    res.json({ success: true, userId });
+    const result = await usuariosModel.createClient(req.body);
+
+    if (!result.success) {
+      // Caso duplicado u otro error controlado
+      return res.status(400).json({ success: false, message: result.message });
+    }
+
+    // Caso éxito → devolvemos el usuario insertado
+    res.json({ success: true, userId: result.insertId });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al registrar cliente' });
+
+    // Si el error vino de la DB (ejemplo UNIQUE constraint)
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(400).json({ success: false, message: "El usuario ya existe (duplicado en DB)" });
+    }
+
+    res.status(500).json({ success: false, message: 'Error al registrar cliente' });
   }
 });
 
