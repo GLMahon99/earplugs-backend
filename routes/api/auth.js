@@ -33,6 +33,7 @@ router.post('/login', async (req, res) => {
   console.log('Datos recibidos en login:', req.body); // <-- log para debug
   try {
     const { email, password } = req.body;
+    console.log('Email:', email); // <-- log para debug
     const cliente = await usuariosModel.getClientByEmailAndPassword(email, password);
 
     if (!cliente) return res.status(401).json({ error: 'Credenciales inválidas' });
