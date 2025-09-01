@@ -35,7 +35,7 @@ async function getClientByEmailAndPassword(email, password) {
 async function clientExists(email, numero_identificacion) {
   try {
     const query = `SELECT * FROM usuarios WHERE email = ? OR numero_identificacion = ? LIMIT 1`;
-    const [rows] = await pool.query(query, [email, numero_identificacion]);
+    const rows = await pool.query(query, [email, numero_identificacion]);
     return rows.length > 0;
   } catch (error) {
     console.log(error);
