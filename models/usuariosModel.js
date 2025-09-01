@@ -21,9 +21,11 @@ async function getClientByEmailAndPassword(email, password) {
         const query = 'SELECT * FROM usuarios WHERE email = ? AND rol="cliente" LIMIT 1';
         const [rows] = await pool.query(query, [email]);
         const cliente = rows[0];
+        console.log('Cliente encontrado:', cliente); // <-- Agrega este log
         if (!cliente) return null;
 
         const match = await bcrypt.compare(password, cliente.password);
+        console.log('Password match:', match); // <-- Agrega este log
         if (match) return cliente;
         return null;
     } catch (error) {
