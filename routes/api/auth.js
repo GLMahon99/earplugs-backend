@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
     console.log('Email:', email); // <-- log para debug
     const cliente = await usuariosModel.getClientByEmailAndPassword(email, password);
 
-    if (!cliente) return res.status(401).json({ error: 'Credenciales inválidas' });
+    if (!cliente) return res.status(401).json({ success: false, message: 'Credenciales inválidas' });
 
     // Crear token JWT
     const token = jwt.sign(
@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '2h' }
     );
 
-    res.json({ token, cliente });
+    res.json({ success: true, user: cliente, token }); // <-- Cambia aquí
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error en el login' });
