@@ -30,6 +30,7 @@ router.post('/register', async (req, res) => {
 
 // 🟢 Login de cliente
 router.post('/login', async (req, res) => {
+  console.log('Datos recibidos en login:', req.body); // <-- log para debug
   try {
     const { email, password } = req.body;
     const cliente = await usuariosModel.getClientByEmailAndPassword(email, password);
