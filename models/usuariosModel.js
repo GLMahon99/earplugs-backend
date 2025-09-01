@@ -19,13 +19,14 @@ async function getUserByUsernameAndPassword(usuario, password) {
 async function getClientByEmailAndPassword(email, password) {
     try {
         const query = 'SELECT * FROM usuarios WHERE email = ? AND rol="cliente" LIMIT 1';
-        const [rows] = await pool.query(query, [email]);
+        const rows = await pool.query(query, [email]); // SIN destructuración
+        console.log('Resultado rows:', rows); // <-- log para debug
         const cliente = rows[0];
-        console.log('Cliente encontrado:', cliente); // <-- Agrega este log
+        console.log('Cliente encontrado:', cliente);
         if (!cliente) return null;
 
         const match = await bcrypt.compare(password, cliente.password);
-        console.log('Password match:', match); // <-- Agrega este log
+        console.log('Password match:', match);
         if (match) return cliente;
         return null;
     } catch (error) {
