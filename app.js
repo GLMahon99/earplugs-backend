@@ -24,7 +24,7 @@ var app = express();
 
 // 🛡️ CORS configurado para desarrollo y producción
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://earplugs.com.ar'],
+  origin: ['https://earplugs.com.ar'],// Añade aquí otros orígenes permitidos como 'http://localhost:3000' para desarrollo
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
