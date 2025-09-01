@@ -19,7 +19,7 @@ async function getUserByUsernameAndPassword(usuario, password) {
 async function getClientByEmailAndPassword(email, password) {
     try {
         const query = 'SELECT * FROM usuarios WHERE email = ? AND rol="cliente" LIMIT 1';
-        const rows = await pool.query(query, [email]);
+        const [rows] = await pool.query(query, [email]);
         const cliente = rows[0];
         if (!cliente) return null;
 
