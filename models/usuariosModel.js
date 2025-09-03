@@ -100,5 +100,6 @@ module.exports = {
     getUserByUsernameAndPassword,
     getClientByEmailAndPassword,
     createClient,
-    getClientById
+    getClientById,
+    getAllClients
 };
