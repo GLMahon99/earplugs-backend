@@ -8,7 +8,8 @@ router.get("/", async (req, res) => {
   try {
     const clients = await usuariosModel.getAllClients();
     res.render("admin/clients", { 
-      layout: "admin/layout", // quita esto si no usas un layout general
+      layout: "admin/layout",
+      usuario: req.session.nombre, // quita esto si no usas un layout general
       clients 
     });
   } catch (err) {
