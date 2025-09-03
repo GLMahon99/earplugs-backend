@@ -33,6 +33,7 @@ sales = sales.map(sale => {
 
 const pedidoTotalNum = Number(sale.pedido_total);
 const envioPrecioNum = Number(sale.envio_precio);
+let discount = sale.forma_pago === 'transferencia' ? pedidoTotalNum * 0.1 : 0;
 
 // luego calculas comisión, tax y total usando estos números
 let commission = sale.forma_pago === 'transferencia'
@@ -64,7 +65,8 @@ total = Math.round(total * 100) / 100;
     detail: detailSale,
     commission: commission,
     tax: tax,
-    total: total
+    total: total,
+    discount: discount
   };
 });
 
