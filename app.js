@@ -18,6 +18,7 @@ var imagesRouter = require('./routes/admin/images');
 var shippingRouter = require('./routes/admin/shipping');
 var apiRouter = require('./routes/api');
 var authRouter = require('./routes/api/auth');
+var clientsRouter = require('./routes/admin/clients');
 const { config } = require('dotenv');
 
 var app = express();
@@ -75,6 +76,7 @@ app.use('/admin/images', imagesRouter);
 app.use('/admin/shipping', shippingRouter);
 app.use('/api', apiRouter);
 app.use('/api/auth', authRouter);
+app.use('/admin/clients', clientsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

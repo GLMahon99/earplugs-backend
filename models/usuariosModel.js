@@ -86,6 +86,16 @@ async function getClientById(id) {
     }
 }
 
+async function getAllClients() {
+    try {
+        const query = 'SELECT * FROM usuarios WHERE rol="cliente"'; // Asegurarse de filtrar solo clientes
+        const rows = await pool.query(query);
+        return rows;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getUserByUsernameAndPassword,
     getClientByEmailAndPassword,
