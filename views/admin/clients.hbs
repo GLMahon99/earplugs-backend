@@ -4,9 +4,6 @@
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="h3">Listado de Usuarios</h1>
-      <a href="/users/add" class="btn btn-primary">
-        <i class="bi bi-person-plus"></i> Nuevo Usuario
-      </a>
     </div>
 
     <div class="card shadow-sm">
@@ -18,17 +15,21 @@
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Email</th>
-                <th>Rol</th>
+                <th>Num de identificacion</th>
+                <th>telefono</th>
+                <th>Cantidad de compras</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {{#each usuarios}}
                 <tr>
-                  <td>{{@index}}</td>
-                  <td>{{this.nombre}}</td>
-                  <td>{{this.email}}</td>
-                  <td>{{this.rol}}</td>
+                  <td>{{id}}</td>
+                  <td>{{nombre}} {{apellido}}</td>
+                  <td>{{mail}}</td>
+                  <td>{{tipo_identificacion}} {{numero_identificacion}}</td>
+                  <td>{{telefono}}</td>
+                  <td>1</td>
                   <td>
                     <a href="/users/{{this.id}}" class="btn btn-sm btn-info text-white">
                       <i class="bi bi-eye"></i> Ver
