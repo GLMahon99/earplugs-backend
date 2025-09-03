@@ -7,8 +7,8 @@ var usuariosModel = require('../../models/usuariosModel');
 router.get("/", async (req, res) => {
   try {
     const clients = await usuariosModel.getAllClients();
-    res.render("clients", { 
-      layout: "layout", // quita esto si no usas un layout general
+    res.render("admin/clients", { 
+      layout: "admin/layout", // quita esto si no usas un layout general
       clients 
     });
   } catch (err) {
