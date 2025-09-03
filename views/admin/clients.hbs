@@ -17,8 +17,8 @@
                 <th>Email</th>
                 <th>Num de identificacion</th>
                 <th>telefono</th>
-                <th>Cantidad de compras</th>
-                <th>Acciones</th>
+                <th>Num de compras</th>
+                {{!-- <th>Acciones</th> --}}
               </tr>
             </thead>
             <tbody>
@@ -30,7 +30,7 @@
                   <td>{{tipo_identificacion}} {{numero_identificacion}}</td>
                   <td>{{telefono}}</td>
                   <td>1</td>
-                  <td>
+                  {{!-- <td>
                     <a href="/users/{{this.id}}" class="btn btn-sm btn-info text-white">
                       <i class="bi bi-eye"></i> Ver
                     </a>
@@ -42,7 +42,7 @@
                         <i class="bi bi-trash"></i> Eliminar
                       </button>
                     </form>
-                  </td>
+                  </td> --}}
                 </tr>
               {{else}}
                 <tr>
