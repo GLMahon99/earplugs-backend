@@ -98,7 +98,7 @@ async function getAllClients() {
 
 async function getSalesByClientsById(id) {
     try {
-        const query = 'SELECT COUNT(*) AS totalSales FROM pedidos WHERE cliente_id = ? AND rol="cliente"'; // Asegurarse de filtrar solo clientes
+        const query = 'SELECT COUNT(*) AS totalSales FROM pedidos WHERE cliente_id = ?';
         const rows = await pool.query(query, [id]);
         return rows[0].totalSales;
     } catch (error) {
