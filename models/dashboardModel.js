@@ -52,6 +52,24 @@ async function getClients() {
     return rows;
 }
 
+async function getSalesByMonth() {
+  try {
+    const query = `
+      SELECT 
+        DATE_FORMAT(fecha, '%Y-%m') AS mes, 
+        SUM(monto) AS total
+      FROM ventas
+      GROUP BY mes
+      ORDER BY mes;
+    `;
+    const [rows] = await pool.query(query);
+    return rows;
+  } catch (error) {
+    console.error("Error en getSalesByMonth:", error);
+    throw error;
+  }
+}
 
 
-module.exports = {getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale}
+
+module.exports = {getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale, getSalesByMonth};

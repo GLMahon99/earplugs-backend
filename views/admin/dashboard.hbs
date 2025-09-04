@@ -208,7 +208,7 @@
       <div class="card">
         <div class="card-body">
           <h5>Ventas en el año</h5>
-          <canvas id="salesPerMonth"></canvas>
+          <canvas id="ventasChart"></canvas>
         </div>
       </div>
       <!-- Website Traffic -->
@@ -231,27 +231,23 @@
 </section>
 
 <script>
-  const ctx = document.getElementById('salesPerMonth').getContext('2d');
-  new Chart(ctx, {
+  const ctx = document.getElementById('ventasChart').getContext('2d');
+  const ventasChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: {{json months}},
+      labels: {{{chartLabels}}},
       datasets: [{
-        label: 'Cantidad de Ventas',
-        data: {{json salesPerMonth}},
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        label: 'Ventas $',
+        data: {{{chartData}}},
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1
       }]
     },
     options: {
+      responsive: true,
       scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1
-          }
-        }
+        y: { beginAtZero: true }
       }
     }
   });

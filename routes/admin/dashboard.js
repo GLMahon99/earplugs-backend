@@ -9,6 +9,7 @@ router.get('/', async (req, res, next) => {
     var salesRecent = await dashboardModel.getDashboardSales();
     var sales = await dashboardModel.getSalesTotal();
     var productsSale = await dashboardModel.getProductsSale();
+    var salesByMonth = await dashboardModel.getSalesByMonth();
 
     let totalProductsSold = 0;
 
@@ -36,23 +37,18 @@ router.get('/', async (req, res, next) => {
       }
     });
 
-    // Agrupar ventas por mes
-    const salesPerMonth = Array(12).fill(0); // índice 0 = enero, 11 = diciembre
 
-    sales.forEach(sale => {
-      const date = new Date(sale.fecha); // Ajustá si tu campo se llama distinto
-      const month = date.getMonth(); // 0 a 11
-      salesPerMonth[month] += 1;
-    });
-
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
     // const revenueTotal = (incomeTotal.reduce((total, sale) => total + sale.pedido_total - sale.envio_precio, 0)).toFixed(2);
     const revenueTotal = 0;
     const clients = clientsTotal.length;
     const salesTotal = sales.length;
 
-    console.log("este es el numero de clientes: ", clients);
+    // console.log("este es el numero de clientes: ", clients);
+
+        // Arrays para Chart.js
+    const labels = salesByMonth.map(r => r.mes);
+    const data = salesByMonth.map(r => r.total);
 
     res.render('admin/dashboard', {
       layout: 'admin/layout',
@@ -62,8 +58,8 @@ router.get('/', async (req, res, next) => {
       salesTotal,
       totalProductsSold,
       revenueTotal,
-      salesPerMonth,
-      months
+      chartLabels: JSON.stringify(labels),
+      chartData: JSON.stringify(data),
     });
   } catch (error) {
     console.error('Error fetching data:', error);
