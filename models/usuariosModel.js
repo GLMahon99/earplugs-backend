@@ -107,6 +107,15 @@ async function getSalesByClientsById(id) {
     }
 }
 
+async function deleteClient(id) {
+    try {
+        const query = 'DELETE FROM usuarios WHERE id = ? AND rol="cliente"';  // Asegurarse de eliminar solo clientes
+        await pool.query(query, [id]);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getUserByUsernameAndPassword,
     getClientByEmailAndPassword,

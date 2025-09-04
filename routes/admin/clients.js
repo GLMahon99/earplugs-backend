@@ -23,15 +23,15 @@ router.get("/", async (req, res) => {
   }
 });
 
-// // --- Eliminar cliente ---
-// router.post("/delete/:id", async (req, res) => {
-//   try {
-//     await usuariosModel.deleteClient(req.params.id);
-//     res.redirect("/clients");
-//   } catch (err) {
-//     console.error("Error al eliminar cliente:", err);
-//     res.status(500).send("Error al eliminar cliente");
-//   }
-// });
+// --- Eliminar cliente ---
+router.post("/delete/:id", async (req, res) => {
+  try {
+    await usuariosModel.deleteClient(req.params.id);
+    res.redirect("/clients");
+  } catch (err) {
+    console.error("Error al eliminar cliente:", err);
+    res.status(500).send("Error al eliminar cliente");
+  }
+});
 
 module.exports = router;
