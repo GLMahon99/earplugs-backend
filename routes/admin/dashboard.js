@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
     var sales = await dashboardModel.getSalesTotal();
     var productsSale = await dashboardModel.getProductsSale();
     var salesByMonth = await dashboardModel.getSalesByMonth();
-
+    console.log("salesByMonth:", salesByMonth);
     let totalProductsSold = 0;
 
     productsSale.forEach(item => {
@@ -47,8 +47,9 @@ router.get('/', async (req, res, next) => {
     // console.log("este es el numero de clientes: ", clients);
 
         // Arrays para Chart.js
-    const labels = salesByMonth.map(r => r.mes);
-    const data = salesByMonth.map(r => r.total);
+// aseguramos que siempre sea array
+const labels = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.mes) : [];
+const data = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.total) : [];
 
     res.render('admin/dashboard', {
       layout: 'admin/layout',
