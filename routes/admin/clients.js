@@ -7,6 +7,11 @@ var usuariosModel = require('../../models/usuariosModel');
 router.get("/", async (req, res) => {
   try {
     const clients = await usuariosModel.getAllClients();
+
+    // Agregar la cantidad de compras a cada cliente
+    for (let client of clients) {
+      client.totalSales = await usuariosModel.getSalesByClientsById(client.id);
+    }
     res.render("admin/clients", { 
       layout: "admin/layout",
       usuario: req.session.nombre, // quita esto si no usas un layout general
