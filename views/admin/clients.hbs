@@ -18,7 +18,7 @@
                 <th>Num de identificacion</th>
                 <th>telefono</th>
                 <th>Num de compras</th>
-                {{!-- <th>Acciones</th> --}}
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -30,19 +30,19 @@
                   <td>{{tipo_identificacion}} {{numero_identificacion}}</td>
                   <td>{{telefono}}</td>
                   <td>{{totalSales}}</td>
-                  {{!-- <td>
-                    <a href="/users/{{this.id}}" class="btn btn-sm btn-info text-white">
+                  <td>
+                    {{!-- <a href="/users/{{this.id}}" class="btn btn-sm btn-info text-white">
                       <i class="bi bi-eye"></i> Ver
                     </a>
                     <a href="/users/edit/{{this.id}}" class="btn btn-sm btn-warning">
                       <i class="bi bi-pencil-square"></i> Editar
-                    </a>
+                    </a> --}}
                     <form action="/users/delete/{{this.id}}" method="POST" class="d-inline">
                       <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que quieres eliminar este usuario?');">
                         <i class="bi bi-trash"></i> Eliminar
                       </button>
                     </form>
-                  </td> --}}
+                  </td>
                 </tr>
               {{else}}
                 <tr>
