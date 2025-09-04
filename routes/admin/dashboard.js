@@ -36,6 +36,17 @@ router.get('/', async (req, res, next) => {
       }
     });
 
+    // Agrupar ventas por mes
+    const salesPerMonth = Array(12).fill(0); // índice 0 = enero, 11 = diciembre
+
+    sales.forEach(sale => {
+      const date = new Date(sale.fecha); // Ajustá si tu campo se llama distinto
+      const month = date.getMonth(); // 0 a 11
+      salesPerMonth[month] += 1;
+    });
+
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
     // const revenueTotal = (incomeTotal.reduce((total, sale) => total + sale.pedido_total - sale.envio_precio, 0)).toFixed(2);
     const revenueTotal = 0;
     const clients = clientsTotal.length;
@@ -50,7 +61,9 @@ router.get('/', async (req, res, next) => {
       clients,
       salesTotal,
       totalProductsSold,
-      revenueTotal
+      revenueTotal,
+      salesPerMonth,
+      months
     });
   } catch (error) {
     console.error('Error fetching data:', error);
