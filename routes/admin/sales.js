@@ -69,14 +69,12 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-// === Nodemailer con Hotmail/Outlook ===
+// === Nodemailer con Gmail ===
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  port: 587,
-  secure: false, // STARTTLS
+  service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER ,// "tjmearplugs@hotmail.com",
-    pass: process.env.EMAIL_PASS // "tu_contraseña_o_app_password"
+    user: process.env.EMAIL_USER ,// "tu_cuenta@gmail.com",
+    pass: process.env.EMAIL_PASS //"app_password_generada"
   }
 });
 
@@ -116,7 +114,7 @@ Por favor revisa los datos de pago o contáctanos para más información.\n\nSal
 
     if (subject && text) {
       const mailOptions = {
-        from: '"Tienda Earplugs" <tjmearplugs@hotmail.com>',
+        from: '"Tienda Earplugs" <' + (process.env.EMAIL_USER || "tu_cuenta@gmail.com") + '>',
         to: email,
         subject,
         text,
