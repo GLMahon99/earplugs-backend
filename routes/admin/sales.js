@@ -8,69 +8,60 @@ router.get('/', async function(req, res, next) {
   try {
     var sales = await salesModel.getSales();
     var clients = await salesModel.getClients();
-    // var detail = await salesModel.getDetailSales();
 
-    // Convertir RowDataPackets a objetos simples
     sales = JSON.parse(JSON.stringify(sales));
     clients = JSON.parse(JSON.stringify(clients));
-    // detail = JSON.parse(JSON.stringify(detail));
-
-    // console.log("este es el detalle de la compra:", detail);
 
     // Agregar información de client y salesDetail a cada venta
-sales = sales.map(sale => {
-  // Encontrar el cliente correspondiente
-  const clientInfo = clients.find(client => client.id === sale.cliente_id);
+    sales = sales.map(sale => {
+      const clientInfo = clients.find(client => client.id === sale.cliente_id);
 
-  
-  // Asegurarse de que sale.detalle sea un array
-  let saleDetails;
-  try {
-    saleDetails = JSON.parse(sale.detalle);
-  } catch (e) {
-    saleDetails = []; // Si no es un JSON válido, asignar un array vacío
-  }
+      // Asegurarse de que sale.detalle sea un array
+      let saleDetails;
+      try {
+        saleDetails = JSON.parse(sale.detalle);
+      } catch (e) {
+        saleDetails = [];
+      }
 
-const pedidoTotalNum = Number(sale.pedido_total);
-const envioPrecioNum = Number(sale.envio_precio);
-let discount = sale.forma_pago === 'transferencia' ? pedidoTotalNum * 0.1 : 0;
+      const pedidoTotalNum = Number(sale.pedido_total);
+      const envioPrecioNum = Number(sale.envio_precio);
+      let discount = sale.forma_pago === 'transferencia' ? pedidoTotalNum * 0.1 : 0;
 
-// luego calculas comisión, tax y total usando estos números
-let commission = sale.forma_pago === 'transferencia'
-  ? 0
-  : (pedidoTotalNum + envioPrecioNum) * 0.0439;
+      // comisión y tax
+      let commission = sale.forma_pago === 'transferencia'
+        ? 0
+        : (pedidoTotalNum + envioPrecioNum) * 0.0439;
 
-let tax = sale.forma_pago === 'transferencia'
-  ? 0
-  : (pedidoTotalNum + envioPrecioNum) * 0.0020;
+      let tax = sale.forma_pago === 'transferencia'
+        ? 0
+        : (pedidoTotalNum + envioPrecioNum) * 0.0020;
 
-// redondear sin cambiar a string
-commission = Math.round(commission * 100) / 100;
-tax = Math.round(tax * 100) / 100;
+      commission = Math.round(commission * 100) / 100;
+      tax = Math.round(tax * 100) / 100;
 
-let total = pedidoTotalNum + envioPrecioNum - commission - tax;
-total = Math.round(total * 100) / 100;
+      let total = pedidoTotalNum + envioPrecioNum - commission - tax;
+      total = Math.round(total * 100) / 100;
 
-  const detailSale = saleDetails.map(item => ({
-    img: cloudinary.url(item.img),
-    code: item.codigo,
-    price: item.precio,
-    title: item.titulo,
-    quantity: item.quantity
-  }));
+      const detailSale = saleDetails.map(item => ({
+        img: cloudinary.url(item.img),
+        code: item.codigo,
+        price: item.precio,
+        title: item.titulo,
+        quantity: item.quantity
+      }));
 
-  return {
-    ...sale,
-    client: clientInfo,
-    detail: detailSale,
-    commission: commission,
-    tax: tax,
-    total: total,
-    discount: discount
-  };
-});
+      return {
+        ...sale,
+        client: clientInfo,
+        detail: detailSale,
+        commission: commission,
+        tax: tax,
+        total: total,
+        discount: discount
+      };
+    });
 
-    // console.log("este es el resultado de sales:", sales);
     res.render('admin/sales', {
       layout: 'admin/layout',
       persona: req.session.nombre,
@@ -81,14 +72,19 @@ total = Math.round(total * 100) / 100;
   }
 });
 
+// === Nodemailer con Hotmail ===
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "smtp.office365.com",
+  port: 587,
+  secure: false, // STARTTLS
   auth: {
-    user: 'gastimahon@gmail.com',
-    pass: '41710562',
+    user: process.env.EMAIL_USER || "tjmearplugs@hotmail.com",
+    pass: process.env.EMAIL_PASS || "tu_contraseña_o_app_password"
   },
+  tls: {
+    ciphers: "SSLv3"
+  }
 });
-
 
 // Ruta para actualizar el estado
 router.post('/editState', async (req, res) => {
@@ -98,14 +94,7 @@ router.post('/editState', async (req, res) => {
 
   try {
     const clients = await salesModel.getClients();
-
-    // Verificación de datos
-    console.log('Datos de clientes:', clients);
-    console.log('ID del cliente recibido:', clientId);
-
-    // Usar === si ambos son del mismo tipo; == si uno es string y otro es number
     const clientData = clients.find(client => client.id == clientId);
-
 
     if (!clientData) {
       console.error('Cliente no encontrado para ID:', clientId);
@@ -113,18 +102,30 @@ router.post('/editState', async (req, res) => {
     }
 
     const email = clientData.email;
+    const nombreCliente = `${clientData.nombre} ${clientData.apellido}`;
 
-    // Actualiza el estado en la base de datos usando tu modelo de pedidos
+    // Actualizar estado en DB
     await salesModel.editStateSaleById(nuevoEstado, pedidoId);
     console.log('Estado actualizado correctamente.');
 
-    // Envía el correo si el estado es "aprobado"
+    // Configuración del email según estado
+    let subject, text;
     if (nuevoEstado === 'aprobado') {
+      subject = '✅ Tu compra fue aprobada';
+      text = `Hola ${nombreCliente},\n\n¡Tu pedido #${pedidoId} fue aprobado con éxito! 
+Pronto lo prepararemos y enviaremos a la dirección indicada.\n\nGracias por confiar en nosotros.\n\nEquipo Earplugs.`;
+    } else if (nuevoEstado === 'rechazado') {
+      subject = '❌ Tu compra fue rechazada';
+      text = `Hola ${nombreCliente},\n\nLamentablemente tu pedido #${pedidoId} fue rechazado. 
+Por favor revisa los datos de pago o contáctanos para más información.\n\nSaludos,\nEquipo Earplugs.`;
+    }
+
+    if (subject && text) {
       const mailOptions = {
-        from: 'gastimahon@gmail.com',
+        from: '"Tienda Earplugs" <tjmearplugs@hotmail.com>',
         to: email,
-        subject: '¡Tu compra ha sido aprobada!',
-        text: 'Detalles de la compra: ...', // Agrega los detalles relevantes aquí
+        subject,
+        text,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
@@ -136,13 +137,11 @@ router.post('/editState', async (req, res) => {
       });
     }
 
-    res.redirect('/admin/sales'); // Redirige a la página principal o donde desees
+    res.redirect('/admin/sales');
   } catch (error) {
     console.error('Error al actualizar el estado:', error);
     res.status(500).send('Error al actualizar el estado del pedido.');
   }
 });
-
-
 
 module.exports = router;
