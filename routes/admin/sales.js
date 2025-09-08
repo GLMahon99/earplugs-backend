@@ -12,11 +12,9 @@ router.get('/', async function(req, res, next) {
     sales = JSON.parse(JSON.stringify(sales));
     clients = JSON.parse(JSON.stringify(clients));
 
-    // Agregar información de client y salesDetail a cada venta
     sales = sales.map(sale => {
       const clientInfo = clients.find(client => client.id === sale.cliente_id);
 
-      // Asegurarse de que sale.detalle sea un array
       let saleDetails;
       try {
         saleDetails = JSON.parse(sale.detalle);
@@ -28,7 +26,6 @@ router.get('/', async function(req, res, next) {
       const envioPrecioNum = Number(sale.envio_precio);
       let discount = sale.forma_pago === 'transferencia' ? pedidoTotalNum * 0.1 : 0;
 
-      // comisión y tax
       let commission = sale.forma_pago === 'transferencia'
         ? 0
         : (pedidoTotalNum + envioPrecioNum) * 0.0439;
@@ -72,17 +69,14 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-// === Nodemailer con Hotmail ===
+// === Nodemailer con Hotmail/Outlook ===
 const transporter = nodemailer.createTransport({
   host: "smtp.office365.com",
   port: 587,
   secure: false, // STARTTLS
   auth: {
-    user: process.env.EMAIL_USER || "tjmearplugs@hotmail.com",
-    pass: process.env.EMAIL_PASS || "tu_contraseña_o_app_password"
-  },
-  tls: {
-    ciphers: "SSLv3"
+    user: process.env.EMAIL_USER ,// "tjmearplugs@hotmail.com",
+    pass: process.env.EMAIL_PASS // "tu_contraseña_o_app_password"
   }
 });
 
@@ -130,9 +124,9 @@ Por favor revisa los datos de pago o contáctanos para más información.\n\nSal
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.error('Error al enviar el correo:', error);
+          console.error('❌ Error al enviar el correo:', error);
         } else {
-          console.log('Correo enviado:', info.response);
+          console.log('📩 Correo enviado:', info.response);
         }
       });
     }
