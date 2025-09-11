@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var salesModel = require('../../models/salesModel');
-const nodemailer = require('nodemailer');
 var cloudinary = require('cloudinary').v2;
 
 router.get('/', async function(req, res, next) {
@@ -69,66 +68,14 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-// === Nodemailer con Gmail ===
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER ,// "tu_cuenta@gmail.com",
-    pass: process.env.EMAIL_PASS //"app_password_generada"
-  }
-});
-
-// Ruta para actualizar el estado
+// Ruta para actualizar el estado (sin envío de email)
 router.post('/editState', async (req, res) => {
   const pedidoId = req.body.id;
   const nuevoEstado = req.body.estado;
-  const clientId = req.body.clientId;
 
   try {
-    const clients = await salesModel.getClients();
-    const clientData = clients.find(client => client.id == clientId);
-
-    if (!clientData) {
-      console.error('Cliente no encontrado para ID:', clientId);
-      return res.status(404).send('Cliente no encontrado.');
-    }
-
-    const email = clientData.email;
-    const nombreCliente = `${clientData.nombre} ${clientData.apellido}`;
-
-    // Actualizar estado en DB
     await salesModel.editStateSaleById(nuevoEstado, pedidoId);
     console.log('Estado actualizado correctamente.');
-
-    // Configuración del email según estado
-    let subject, text;
-    if (nuevoEstado === 'aprobado') {
-      subject = '✅ Tu compra fue aprobada';
-      text = `Hola ${nombreCliente},\n\n¡Tu pedido #${pedidoId} fue aprobado con éxito! 
-Pronto lo prepararemos y enviaremos a la dirección indicada.\n\nGracias por confiar en nosotros.\n\nEquipo Earplugs.`;
-    } else if (nuevoEstado === 'rechazado') {
-      subject = '❌ Tu compra fue rechazada';
-      text = `Hola ${nombreCliente},\n\nLamentablemente tu pedido #${pedidoId} fue rechazado. 
-Por favor revisa los datos de pago o contáctanos para más información.\n\nSaludos,\nEquipo Earplugs.`;
-    }
-
-    if (subject && text) {
-      const mailOptions = {
-        from: '"Tienda Earplugs" <' + (process.env.EMAIL_USER || "tu_cuenta@gmail.com") + '>',
-        to: email,
-        subject,
-        text,
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error('❌ Error al enviar el correo:', error);
-        } else {
-          console.log('📩 Correo enviado:', info.response);
-        }
-      });
-    }
-
     res.redirect('/admin/sales');
   } catch (error) {
     console.error('Error al actualizar el estado:', error);
