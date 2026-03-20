@@ -256,8 +256,8 @@
       datasets: [{
         label: 'Ventas $',
         data: {{{chartDataYear}}},
-        backgroundColor: 'rgba(99, 102, 241, 0.7)',
-        hoverBackgroundColor: 'rgba(99, 102, 241, 1)',
+        backgroundColor: 'rgba(23, 75, 135, 0.7)',
+        hoverBackgroundColor: 'rgba(23, 75, 135, 1)',
         borderRadius: 6,
         borderWidth: 0
       }]
@@ -282,10 +282,10 @@
   // Gráfico de Ventas en el mes (diario)
   const ctxMonth = document.getElementById('ventasMonthChart').getContext('2d');
   
-  // Crear gradiente para el gráfico de líneas
+  // Crear gradiente para el gráfico de líneas (utilizando el azul del usuario)
   const gradient = ctxMonth.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
-  gradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+  gradient.addColorStop(0, 'rgba(27, 90, 158, 0.4)');
+  gradient.addColorStop(1, 'rgba(27, 90, 158, 0)');
 
   const ventasMonthChart = new Chart(ctxMonth, {
     type: 'line',
@@ -295,12 +295,12 @@
         label: 'Ventas Diarias $',
         data: {{{chartDataMonth}}},
         backgroundColor: gradient,
-        borderColor: '#10b981',
+        borderColor: '#174b87',
         borderWidth: 3,
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: '#fff',
-        pointBorderColor: '#10b981',
+        pointBackgroundColor: '#fcfc00', // El amarillo del usuario para los puntos
+        pointBorderColor: '#174b87',
         pointBorderWidth: 2,
         pointRadius: 4,
         pointHoverRadius: 6

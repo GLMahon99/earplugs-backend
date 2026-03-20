@@ -5,16 +5,21 @@
 }
 
 :root{
-    /* MODERN PREMIUM PALETTE */
+    /* USER REQUESTED PALETTE */
     --body-bg: #f8fafc;
     --sidebar-bg: #ffffff;
     --header-bg: rgba(255, 255, 255, 0.8);
-    --primary-color: #6366f1; /* Indigo 500 */
-    --primary-hover: #4f46e5;
-    --secondary-color: #10b981; /* Emerald 500 */
-    --accent-color: #8b5cf6; /* Violet 500 */
-    --text-main: #1e293b; /* Slate 800 */
-    --text-muted: #64748b; /* Slate 500 */
+    
+    --color-default: #222;
+    --primary-color: #174b87;
+    --primary-hover: #1b5a9e;
+    --secondary-color: #fcfc00;
+    --color-tertiary: #1b5a9e;
+    --color-opacity: #00000086;
+    --color-blue-opacity: #174b87cd;
+
+    --text-main: #1e293b;
+    --text-muted: #64748b;
     --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
     --border-radius: 16px;
 }
@@ -41,12 +46,12 @@
   }
   
   a {
-    color: #4154f1;
+    color: var(--primary-color);
     text-decoration: none;
   }
   
   a:hover {
-    color: #717ff5;
+    color: var(--primary-hover);
     text-decoration: none;
   }
   
@@ -99,7 +104,7 @@
     right: 15px;
     bottom: 15px;
     z-index: 99999;
-    background: #4154f1;
+    background: var(--primary-color);
     width: 40px;
     height: 40px;
     border-radius: 4px;
@@ -113,7 +118,7 @@
   }
   
   .back-to-top:hover {
-    background: #6776f4;
+    background: var(--primary-hover);
     color: #fff;
   }
   
@@ -322,7 +327,7 @@
   
   .accordion-flush .accordion-button:not(.collapsed) {
     box-shadow: none;
-    color: #4154f1;
+    color: var(--primary-color);
   }
   
   .accordion-flush .accordion-body {
@@ -375,8 +380,8 @@
   
   .nav-tabs-bordered .nav-link.active {
     background-color: #fff;
-    color: #4154f1;
-    border-bottom: 2px solid #4154f1;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
   }
   
   /*--------------------------------------------------------------
@@ -713,7 +718,7 @@
     align-items: center;
     font-size: 15px;
     font-weight: 600;
-    color: #4154f1;
+    color: var(--primary-color);
     transition: 0.3;
     background: #f6f9ff;
     padding: 10px 15px;
@@ -723,7 +728,7 @@
   .sidebar-nav .nav-link i {
     font-size: 16px;
     margin-right: 10px;
-    color: #4154f1;
+    color: var(--primary-color);
   }
   
   .sidebar-nav .nav-link.collapsed {
@@ -736,12 +741,12 @@
   }
   
   .sidebar-nav .nav-link:hover {
-    color: #4154f1;
+    color: var(--primary-color);
     background: #f6f9ff;
   }
   
   .sidebar-nav .nav-link:hover i {
-    color: #4154f1;
+    color: var(--primary-color);
   }
   
   .sidebar-nav .nav-link .bi-chevron-down {
@@ -779,11 +784,11 @@
   
   .sidebar-nav .nav-content a:hover,
   .sidebar-nav .nav-content a.active {
-    color: #4154f1;
+    color: var(--primary-color);
   }
   
   .sidebar-nav .nav-content a.active i {
-    background-color: #4154f1;
+    background-color: var(--primary-color);
   }
   
   /*--------------------------------------------------------------
@@ -850,18 +855,18 @@
   }
   
   .dashboard .sales-card .card-icon {
-    color: var(--secondary-color);
-    background: rgba(16, 185, 129, 0.1);
+    color: var(--primary-color);
+    background: rgba(23, 75, 135, 0.1);
   }
   
   .dashboard .revenue-card .card-icon {
-    color: var(--accent-color);
-    background: rgba(139, 92, 246, 0.1);
+    color: var(--color-tertiary);
+    background: rgba(27, 90, 158, 0.1);
   }
   
   .dashboard .customers-card .card-icon {
-    color: #f59e0b;
-    background: rgba(245, 158, 11, 0.1);
+    color: #cca300; /* Darker yellow for accessibility on white */
+    background: rgba(252, 252, 0, 0.2);
   }
 
   
@@ -968,24 +973,25 @@
   }
 
   .dashboard .recent-sales .aprobado{
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: #fff;
     padding: 5px 10px;
     border-radius: 8px;
   }
 
   .dashboard .recent-sales .rechazado{
-    background-color: #ef4444;
+    background-color: #d32f2f;
     color: #fff;
     padding: 5px 10px;
     border-radius: 8px;
   }
 
   .dashboard .recent-sales .pendiente{
-    background-color: #f59e0b;
-    color: #fff;
+    background-color: var(--color-secondary);
+    color: #000;
     padding: 5px 10px;
     border-radius: 8px;
+    font-weight: 500;
   }
   
   /* Top Selling */
@@ -1202,7 +1208,7 @@
   }
   
   .contact .php-email-form button[type=submit] {
-    background: #4154f1;
+    background: var(--primary-color);
     border: 0;
     padding: 10px 30px;
     color: #fff;
