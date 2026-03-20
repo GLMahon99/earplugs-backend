@@ -63,7 +63,7 @@ WHERE estado = 'aprobado'
 GROUP BY mes
 ORDER BY mes;
     `;
-    const [rows] = await pool.query(query);
+    const rows = await pool.query(query);
     return rows;
   } catch (error) {
     console.error("Error en getSalesByMonth:", error);
@@ -71,6 +71,25 @@ ORDER BY mes;
   }
 }
 
+async function getSalesByDay() {
+  try {
+    const query = `
+      SELECT 
+  DATE_FORMAT(fecha_pedido, '%Y-%m-%d') AS dia, 
+  SUM(pedido_total - envio_precio) AS total
+FROM pedidos
+WHERE estado = 'aprobado' AND MONTH(fecha_pedido) = MONTH(CURRENT_DATE()) AND YEAR(fecha_pedido) = YEAR(CURRENT_DATE())
+GROUP BY dia
+ORDER BY dia;
+    `;
+    const rows = await pool.query(query);
+    return rows;
+  } catch (error) {
+    console.error("Error en getSalesByDay:", error);
+    throw error;
+  }
+}
 
 
-module.exports = {getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale, getSalesByMonth};
+
+module.exports = {getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale, getSalesByMonth, getSalesByDay};

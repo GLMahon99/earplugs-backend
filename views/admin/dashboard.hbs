@@ -136,7 +136,6 @@
           <h5 class="card-title">Recent Activity <span>| Today</span></h5>
 
           <div class="activity">
-
             <div class="activity-item d-flex">
               <div class="activite-label">32 min</div>
               <i
@@ -202,15 +201,25 @@
             </div><!-- End activity item-->
 
           </div>
-
         </div>
       </div><!-- End Recent Activity -->
       <div class="card">
         <div class="card-body">
-          <h5>Ventas en el año</h5>
-          <canvas id="ventasChart"></canvas>
+          <h5 class="card-title">Ventas en el año <span>(por mes)</span></h5>
+          <div style="height: 250px;">
+            <canvas id="ventasYearChart"></canvas>
+          </div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Ventas en el mes <span>(diarias)</span></h5>
+          <div style="height: 250px;">
+            <canvas id="ventasMonthChart"></canvas>
+          </div>
+        </div>
+      </div>
+
       <!-- Website Traffic -->
       <div class="card">
         <div class="card-body pb-0">
@@ -231,23 +240,85 @@
 </section>
 
 <script>
-  const ctx = document.getElementById('ventasChart').getContext('2d');
-  const ventasChart = new Chart(ctx, {
+  // Configuración global de Chart.js para un look premium
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.color = '#64748b';
+  Chart.defaults.plugins.tooltip.backgroundColor = '#1e293b';
+  Chart.defaults.plugins.tooltip.padding = 12;
+  Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+  // Gráfico de Ventas en el año (mensual)
+  const ctxYear = document.getElementById('ventasYearChart').getContext('2d');
+  const ventasYearChart = new Chart(ctxYear, {
     type: 'bar',
     data: {
-      labels: {{{chartLabels}}},
+      labels: {{{chartLabelsYear}}},
       datasets: [{
         label: 'Ventas $',
-        data: {{{chartData}}},
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
+        data: {{{chartDataYear}}},
+        backgroundColor: 'rgba(99, 102, 241, 0.7)',
+        hoverBackgroundColor: 'rgba(99, 102, 241, 1)',
+        borderRadius: 6,
+        borderWidth: 0
       }]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
       scales: {
-        y: { beginAtZero: true }
+        y: { 
+          beginAtZero: true,
+          grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+          ticks: { callback: value => '$' + value }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // Gráfico de Ventas en el mes (diario)
+  const ctxMonth = document.getElementById('ventasMonthChart').getContext('2d');
+  
+  // Crear gradiente para el gráfico de líneas
+  const gradient = ctxMonth.createLinearGradient(0, 0, 0, 400);
+  gradient.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
+  gradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+  const ventasMonthChart = new Chart(ctxMonth, {
+    type: 'line',
+    data: {
+      labels: {{{chartLabelsMonth}}},
+      datasets: [{
+        label: 'Ventas Diarias $',
+        data: {{{chartDataMonth}}},
+        backgroundColor: gradient,
+        borderColor: '#10b981',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#fff',
+        pointBorderColor: '#10b981',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { 
+          beginAtZero: true, 
+          grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+          ticks: { callback: value => '$' + value }
+        },
+        x: { grid: { display: false } }
       }
     }
   });

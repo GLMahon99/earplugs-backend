@@ -1,18 +1,22 @@
 *{
-    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 :root{
-    /* COLORS*/
-    --body-color: #f6f9ff;
-    --primary-color: #183dc2;
-    --color-secondary: rgb(252, 252, 0);
-    --color-tertiary: #1e47db;
-    --primary-color-ligth: #f6f5ff;
-
+    /* MODERN PREMIUM PALETTE */
+    --body-bg: #f8fafc;
+    --sidebar-bg: #ffffff;
+    --header-bg: rgba(255, 255, 255, 0.8);
+    --primary-color: #6366f1; /* Indigo 500 */
+    --primary-hover: #4f46e5;
+    --secondary-color: #10b981; /* Emerald 500 */
+    --accent-color: #8b5cf6; /* Violet 500 */
+    --text-main: #1e293b; /* Slate 800 */
+    --text-muted: #64748b; /* Slate 500 */
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    --border-radius: 16px;
 }
 
 /**
@@ -31,9 +35,9 @@
   }
   
   body {
-    font-family: "Open Sans", sans-serif;
-    background: #f6f9ff;
-    color: #444444;
+    font-family: "Inter", sans-serif;
+    background: var(--body-bg);
+    color: var(--text-main);
   }
   
   a {
@@ -52,7 +56,8 @@
   h4,
   h5,
   h6 {
-    font-family: "Nunito", sans-serif;
+    font-family: "Outfit", sans-serif;
+    font-weight: 600;
   }
   
   /*--------------------------------------------------------------
@@ -237,8 +242,14 @@
   .card {
     margin-bottom: 30px;
     border: none;
-    border-radius: 5px;
-    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
   
   .card-header,
@@ -397,8 +408,9 @@
     transition: all 0.5s;
     z-index: 997;
     height: 60px;
-    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
-    background-color: #fff;
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.05);
+    background-color: var(--header-bg);
+    backdrop-filter: blur(10px);
     padding-left: 20px;
     /* Toggle Sidebar Button */
     /* Search Bar */
@@ -838,18 +850,18 @@
   }
   
   .dashboard .sales-card .card-icon {
-    color: #4154f1;
-    background: #f6f6fe;
+    color: var(--secondary-color);
+    background: rgba(16, 185, 129, 0.1);
   }
   
   .dashboard .revenue-card .card-icon {
-    color: #2eca6a;
-    background: #e0f8e9;
+    color: var(--accent-color);
+    background: rgba(139, 92, 246, 0.1);
   }
   
   .dashboard .customers-card .card-icon {
-    color: #ff771d;
-    background: #ffecdf;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
   }
 
   
@@ -885,6 +897,7 @@
     flex-shrink: 0;
     border: 3px solid #fff;
     flex-grow: 0;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
   }
   
   .dashboard .activity .activity-item .activity-content {
@@ -955,16 +968,24 @@
   }
 
   .dashboard .recent-sales .aprobado{
-    background-color: green;
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
   }
 
   .dashboard .recent-sales .rechazado{
-    background-color: red;
+    background-color: #ef4444;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
   }
 
   .dashboard .recent-sales .pendiente{
-    background-color: var(--color-secondary);
-    color: var(--primary-color);
+    background-color: #f59e0b;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
   }
   
   /* Top Selling */

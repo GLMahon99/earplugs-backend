@@ -10,7 +10,10 @@ router.get('/', async (req, res, next) => {
     var sales = await dashboardModel.getSalesTotal();
     var productsSale = await dashboardModel.getProductsSale();
     var salesByMonth = await dashboardModel.getSalesByMonth();
+    var salesByDay = await dashboardModel.getSalesByDay();
     console.log("salesByMonth:", salesByMonth);
+    console.log("salesByDay:", salesByDay);
+
     let totalProductsSold = 0;
 
     productsSale.forEach(item => {
@@ -39,17 +42,16 @@ router.get('/', async (req, res, next) => {
 
 
 
-    // const revenueTotal = (incomeTotal.reduce((total, sale) => total + sale.pedido_total - sale.envio_precio, 0)).toFixed(2);
-    const revenueTotal = 0;
+    const revenueTotal = incomeTotal.reduce((total, sale) => total + parseFloat(sale.pedido_total || 0) - parseFloat(sale.envio_precio || 0), 0);
     const clients = clientsTotal.length;
     const salesTotal = sales.length;
 
-    // console.log("este es el numero de clientes: ", clients);
+    // Arrays para Chart.js
+    const labelsMonth = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.mes) : [];
+    const dataMonth = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.total) : [];
 
-        // Arrays para Chart.js
-// aseguramos que siempre sea array
-const labels = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.mes) : [];
-const data = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.total) : [];
+    const labelsDay = Array.isArray(salesByDay) ? salesByDay.map(r => r.dia) : [];
+    const dataDay = Array.isArray(salesByDay) ? salesByDay.map(r => r.total) : [];
 
     res.render('admin/dashboard', {
       layout: 'admin/layout',
@@ -58,9 +60,11 @@ const data = Array.isArray(salesByMonth) ? salesByMonth.map(r => r.total) : [];
       clients,
       salesTotal,
       totalProductsSold,
-      revenueTotal,
-      chartLabels: JSON.stringify(labels),
-      chartData: JSON.stringify(data),
+      revenueTotal: revenueTotal.toFixed(2),
+      chartLabelsYear: JSON.stringify(labelsMonth),
+      chartDataYear: JSON.stringify(dataMonth),
+      chartLabelsMonth: JSON.stringify(labelsDay),
+      chartDataMonth: JSON.stringify(dataDay),
     });
   } catch (error) {
     console.error('Error fetching data:', error);
