@@ -8,6 +8,9 @@ var fileUpLoad = require('express-fileupload');
 var cors = require('cors');
 require('dotenv').config();
 
+// 🛡️ Middlewares
+var secured = require('./middleware/auth');
+
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/admin/login');
 var adminRouter = require('./routes/admin/dashboard');
@@ -19,13 +22,12 @@ var shippingRouter = require('./routes/admin/shipping');
 var apiRouter = require('./routes/api');
 var authRouter = require('./routes/api/auth');
 var clientsRouter = require('./routes/admin/clients');
-const { config } = require('dotenv');
 
 var app = express();
 
 // 🛡️ CORS configurado para desarrollo y producción
 const corsOptions = {
-  origin: ['https://earplugs.com.ar', 'http://localhost:3000'],// Añade aquí otros orígenes permitidos como 'http://localhost:3000' para desarrollo
+  origin: ['https://earplugs.com.ar', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
@@ -35,7 +37,6 @@ app.use(cors(corsOptions));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,41 +44,33 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: 'c1a65sc484e63aFFF35sa679',
+  secret: process.env.SESSION_SECRET || 'fallback-secret-development-only', // 🛡️ Usar variable de entorno
   cookie: { maxAge: null },
   resave: false,
   saveUninitialized: true
 }));
-
-secured = async (req, res, next) => {
-  try {
-    console.log(req.session.id_usuario);
-    if (req.session.id_usuario) {
-      next();
-    } else {
-      res.redirect('/admin/login');
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 app.use(fileUpLoad({
   useTempFiles: true,
   tempFileDir: '/tmp'
 }));
 
+// Routes
 app.use('/', indexRouter);
 app.use('/admin/login', loginRouter);
+
+// 🛡️ Rutas de administración protegidas
 app.use('/admin/dashboard', secured, adminRouter);
 app.use('/admin/products', secured, productsRouter);
-app.use('/admin/sales', salesRouter);
-app.use('/admin/faq', faqRouter);
-app.use('/admin/images', imagesRouter);
-app.use('/admin/shipping', shippingRouter);
+app.use('/admin/sales', secured, salesRouter);
+app.use('/admin/faq', secured, faqRouter);
+app.use('/admin/images', secured, imagesRouter);
+app.use('/admin/shipping', secured, shippingRouter);
+app.use('/admin/clients', secured, clientsRouter);
+
+// APIs
 app.use('/api', apiRouter);
 app.use('/api/auth', authRouter);
-app.use('/admin/clients', clientsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

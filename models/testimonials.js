@@ -1,15 +1,13 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
 async function getTestimonio() {
-    var query = 'select * from testimonios';
-    var rows = await pool.query(query);
+    const [rows] = await pool.query('select * from testimonios');
     return rows;
 }
 
 async function getTestimonioById(id) {
-    var query = 'select * from testimonios where testimonio_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('select * from testimonios where testimonio_id = ?', [id]);
     return rows[0];
 }
 
-module.exports = {getTestimonio, getTestimonioById};
+module.exports = { getTestimonio, getTestimonioById };

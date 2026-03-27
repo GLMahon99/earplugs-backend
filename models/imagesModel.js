@@ -1,38 +1,33 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
 async function getImages() {
-    var query = 'select * from imagenes';
-    var rows = await pool.query(query);
+    const [rows] = await pool.query('select * from imagenes');
     return rows;
 }
 
 async function insertImages(obj) {
     try {
-        var query = 'insert into imagenes set ?';
-        var rows = await pool.query(query, [obj])
+        const [rows] = await pool.query('insert into imagenes set ?', [obj]);
         return rows;
-    } catch(error) {
-        console.log(error);
+    } catch (error) {
+        console.error('Error in insertImages:', error);
         throw error;
     }
 }
 
 async function deleteImagesById(id) {
-    var query = 'delete from imagenes where img_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('delete from imagenes where img_id = ?', [id]);
     return rows;
 }
 
 async function getImagesById(id) {
-    var query = 'select * from imagenes where img_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('select * from imagenes where img_id = ?', [id]);
     return rows[0];
 }
 
 async function getImagesByCategory(categoria) {
-    var query = 'select * from imagenes where categoria = ?';
-    var rows = await pool.query(query, [categoria]);
+    const [rows] = await pool.query('select * from imagenes where categoria = ?', [categoria]);
     return rows;
 }
 
-module.exports = {getImages,insertImages, getImages, getImagesById, deleteImagesById , getImagesByCategory};
+module.exports = { getImages, insertImages, getImagesById, deleteImagesById, getImagesByCategory };

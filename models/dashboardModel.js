@@ -1,44 +1,43 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
 async function getSalesTotal() {
-    var query = `
+    const query = `
     SELECT pedido_id
     FROM pedidos
     WHERE estado = 'aprobado'
   `;
-    var rows = await pool.query(query);
+    const [rows] = await pool.query(query);
     return rows;
 }
 
 async function getProductsSale() {
-    var query = `
+    const query = `
     SELECT detalle
 FROM pedidos
 WHERE estado = 'aprobado'
   `;
-    var rows = await pool.query(query);
+    const [rows] = await pool.query(query);
     return rows;
 }
 
 async function getDashboardSales() {
-    var query = `
+    const query = `
     SELECT *
 FROM pedidos
 ORDER BY pedido_id DESC
 LIMIT 5
-  
   `;
-    var rows = await pool.query(query);
+    const [rows] = await pool.query(query);
     return rows;
 }
 
 async function getIncome() {
-    var query = `
+    const query = `
     SELECT pedido_total, envio_precio
     FROM pedidos
     WHERE estado = 'aprobado'
   `;
-    var rows = await pool.query(query);
+    const [rows] = await pool.query(query);
     return rows;
 }
 
@@ -48,13 +47,13 @@ async function getClients() {
         FROM usuarios
         WHERE rol='cliente'
     `;
-    const rows = await pool.query(query);
+    const [rows] = await pool.query(query);
     return rows;
 }
 
 async function getSalesByMonth() {
-  try {
-    const query = `
+    try {
+        const query = `
       SELECT 
   DATE_FORMAT(fecha_pedido, '%Y-%m') AS mes, 
   SUM(pedido_total - envio_precio) AS total
@@ -63,17 +62,17 @@ WHERE estado = 'aprobado'
 GROUP BY mes
 ORDER BY mes;
     `;
-    const rows = await pool.query(query);
-    return rows;
-  } catch (error) {
-    console.error("Error en getSalesByMonth:", error);
-    throw error;
-  }
+        const [rows] = await pool.query(query);
+        return rows;
+    } catch (error) {
+        console.error("Error en getSalesByMonth:", error);
+        throw error;
+    }
 }
 
 async function getSalesByDay() {
-  try {
-    const query = `
+    try {
+        const query = `
       SELECT 
   DATE_FORMAT(fecha_pedido, '%Y-%m-%d') AS dia, 
   SUM(pedido_total - envio_precio) AS total
@@ -82,14 +81,12 @@ WHERE estado = 'aprobado' AND MONTH(fecha_pedido) = MONTH(CURRENT_DATE()) AND YE
 GROUP BY dia
 ORDER BY dia;
     `;
-    const rows = await pool.query(query);
-    return rows;
-  } catch (error) {
-    console.error("Error en getSalesByDay:", error);
-    throw error;
-  }
+        const [rows] = await pool.query(query);
+        return rows;
+    } catch (error) {
+        console.error("Error en getSalesByDay:", error);
+        throw error;
+    }
 }
 
-
-
-module.exports = {getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale, getSalesByMonth, getSalesByDay};
+module.exports = { getDashboardSales, getIncome, getClients, getSalesTotal, getProductsSale, getSalesByMonth, getSalesByDay };

@@ -1,10 +1,6 @@
-const mysql = require('mysql2');
-const util = require('util');
-const { config } = require('dotenv');
+const mysql = require('mysql2/promise');
 
-config(); // Cargar variables de entorno
-
-// Configura el pool de conexiones
+// Configura el pool de conexiones con soporte para Promesas
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -12,21 +8,24 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DB_NAME,
     port: process.env.MYSQL_PORT,
     ssl: {
-        rejectUnauthorized: false // Permite certificados autofirmados
-    }
+        rejectUnauthorized: false
+    },
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-// Convierte el método query a una promesa para evitar el callback hell
-pool.query = util.promisify(pool.query);
-
-// Manejo de errores en la conexión
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
+// Verificación inicial de conexión (opcional en pool, pero buena práctica)
+async function testConnection() {
+    try {
+        const connection = await pool.getConnection();
+        console.log('✅ Database connected successfully (via mysql2/promise).');
+        connection.release();
+    } catch (err) {
+        console.error('❌ Error connecting to the database:', err.message);
     }
-    if (connection) connection.release();
-    console.log('Database connected successfully.');
-});
+}
+
+testConnection();
 
 module.exports = pool;

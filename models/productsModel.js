@@ -1,48 +1,43 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
 async function getProducts() {
-    var query = 'select * from productos';
-    var rows = await pool.query(query);
+    const [rows] = await pool.query('select * from productos');
     return rows;
 }
 
 async function insertProducts(obj) {
     try {
-        var query = 'insert into productos set ?';
-        var rows = await pool.query(query, [obj])
+        const [rows] = await pool.query('insert into productos set ?', [obj]);
         return rows;
-    } catch(error) {
-        console.log(error);
+    } catch (error) {
+        console.error('Error in insertProducts:', error);
         throw error;
     }
 }
 
 async function deleteProductsById(id) {
-    var query = 'delete from productos where producto_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('delete from productos where producto_id = ?', [id]);
     return rows;
 }
 
 async function getProductsById(id) {
-    var query = 'select * from productos where producto_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('select * from productos where producto_id = ?', [id]);
     return rows[0];
 }
 
 async function editProductsById(obj, id) {
     try {
-        var query = 'update productos set ? where producto_id = ?';
-        var rows = await pool.query(query, [obj,id]);
+        const [rows] = await pool.query('update productos set ? where producto_id = ?', [obj, id]);
         return rows;
     } catch (error) {
+        console.error('Error in editProductsById:', error);
         throw error;
     }
 }
 
 async function getProductsByCategory(categoria) {
-    var query = 'select * from productos where categoria = ?';
-    var rows = await pool.query(query, [categoria]);
-    return rows[0];
+    const [rows] = await pool.query('select * from productos where categoria = ?', [categoria]);
+    return rows; // Retorna todos los productos de la categoría
 }
 
-module.exports = {getProducts , insertProducts, deleteProductsById, getProductsById, editProductsById, getProductsByCategory};
+module.exports = { getProducts, insertProducts, deleteProductsById, getProductsById, editProductsById, getProductsByCategory };

@@ -1,37 +1,28 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
 async function getFaq() {
-    var query = 'select * from faq';
-    var rows = await pool.query(query);
+    const [rows] = await pool.query('select * from faq');
     return rows;
 }
 
-
-
 async function insertFaq(obj) {
     try {
-        var query = 'insert into faq set ?';
-        var rows = await pool.query(query, [obj])
+        const [rows] = await pool.query('insert into faq set ?', [obj]);
         return rows;
-    } catch(error) {
-        console.log(error);
+    } catch (error) {
+        console.error('Error in insertFaq:', error);
         throw error;
     }
 }
 
-
-
 async function deleteFaqById(id) {
-    var query = 'delete from faq where faq_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('delete from faq where faq_id = ?', [id]);
     return rows;
 }
 
 async function getFaqById(id) {
-    var query = 'select * from faq where faq_id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('select * from faq where faq_id = ?', [id]);
     return rows[0];
 }
 
-
-module.exports = {getFaq, getFaqById, insertFaq, deleteFaqById};
+module.exports = { getFaq, getFaqById, insertFaq, deleteFaqById };

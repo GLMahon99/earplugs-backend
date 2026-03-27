@@ -1,47 +1,38 @@
-var pool = require('./bd');
+const pool = require('./bd');
 
 async function getShipp() {
-    var query = 'select * from shippingprice';
-    var rows = await pool.query(query);
+    const [rows] = await pool.query('select * from shippingprice');
     return rows;
 }
 
-
-
 async function insertShipp(obj) {
     try {
-        var query = 'insert into shippingprice set ?';
-        var rows = await pool.query(query, [obj])
+        const [rows] = await pool.query('insert into shippingprice set ?', [obj]);
         return rows;
-    } catch(error) {
-        console.log(error);
+    } catch (error) {
+        console.error('Error in insertShipp:', error);
         throw error;
     }
 }
 
-
-
 async function deleteShippById(id) {
-    var query = 'delete from shippingprice where id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('delete from shippingprice where id = ?', [id]);
     return rows;
 }
 
 async function getShippById(id) {
-    var query = 'select * from shippingprice where id = ?';
-    var rows = await pool.query(query, [id]);
+    const [rows] = await pool.query('select * from shippingprice where id = ?', [id]);
     return rows[0];
 }
+
 async function editShippById(newPrice, id) {
     try {
-        var query = 'UPDATE shippingprice SET price = ? WHERE id = ?';
-        var rows = await pool.query(query, [newPrice, id]);
+        const [rows] = await pool.query('UPDATE shippingprice SET price = ? WHERE id = ?', [newPrice, id]);
         return rows;
     } catch (error) {
+        console.error('Error in editShippById:', error);
         throw error;
     }
 }
 
-
-
-module.exports = {getShipp, getShippById, insertShipp, deleteShippById, editShippById};
+module.exports = { getShipp, getShippById, insertShipp, deleteShippById, editShippById };
