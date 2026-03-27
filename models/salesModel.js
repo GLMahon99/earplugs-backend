@@ -35,10 +35,17 @@ async function editStateSaleById(estado, id) {
     }
 }
 
+// Obtener pedidos por ID de cliente (historial para el frontend)
+async function getSalesByClientId(clientId) {
+    const [rows] = await pool.query('SELECT * FROM pedidos WHERE cliente_id = ? ORDER BY fecha_pedido DESC', [clientId]);
+    return rows;
+}
+
 module.exports = {
     getSales,
     getDetailSales,
     getClients,
     getSalesById,
-    editStateSaleById
+    editStateSaleById,
+    getSalesByClientId
 };
