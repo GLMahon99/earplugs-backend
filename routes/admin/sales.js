@@ -3,7 +3,7 @@ var router = express.Router();
 var salesModel = require('../../models/salesModel');
 var cloudinary = require('cloudinary').v2;
 
-router.get('/', async function(req, res, next) {
+router.get('/', async function (req, res, next) {
   try {
     var sales = await salesModel.getSales();
     var clients = await salesModel.getClients();
@@ -36,7 +36,7 @@ router.get('/', async function(req, res, next) {
       commission = Math.round(commission * 100) / 100;
       tax = Math.round(tax * 100) / 100;
 
-      let total = pedidoTotalNum + envioPrecioNum - commission - tax;
+      let total = pedidoTotalNum + envioPrecioNum - commission - tax - discount;
       total = Math.round(total * 100) / 100;
 
       const detailSale = saleDetails.map(item => ({
