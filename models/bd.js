@@ -12,7 +12,18 @@ const pool = mysql.createPool({
     },
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    enableKeepAlive: true, // Mantiene la conexión activa enviando "pings"
+    keepAliveInitialDelay: 10000, // Empieza a los 10 segundos
+    connectTimeout: 20000, // Tiempo máximo para intentar conectar
+});
+
+// Manejador de errores del pool para evitar que el proceso muera
+pool.on('error', (err) => {
+    console.error('Unexpected error on idle client', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+        console.error('Database connection was closed.');
+    }
 });
 
 // Verificación inicial de conexión (opcional en pool, pero buena práctica)
