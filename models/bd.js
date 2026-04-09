@@ -15,7 +15,9 @@ const pool = mysql.createPool({
     queueLimit: 0,
     enableKeepAlive: true, // Mantiene la conexión activa enviando "pings"
     keepAliveInitialDelay: 10000, // Empieza a los 10 segundos
-    connectTimeout: 20000, // Tiempo máximo para intentar conectar
+    connectTimeout: 20000,
+    maxIdle: 10, // Máximo de conexiones inactivas en el pool
+    idleTimeout: 60000, // Cierra conexiones inactivas después de 60 segundos
 });
 
 // Manejador de errores del pool para evitar que el proceso muera
@@ -28,12 +30,14 @@ pool.on('error', (err) => {
 
 // Verificación inicial de conexión (opcional en pool, pero buena práctica)
 async function testConnection() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         console.log('✅ Database connected successfully (via mysql2/promise).');
-        connection.release();
     } catch (err) {
         console.error('❌ Error connecting to the database:', err.message);
+    } finally {
+        if (connection) connection.release();
     }
 }
 

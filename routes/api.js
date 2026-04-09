@@ -8,23 +8,28 @@ var shippingModel = require('./../models/shippingModel')
 var cloudinary = require('cloudinary').v2;
 
 router.get('/products', async (req, res, next)=>{
-    let products = await productsModel.getProducts();
+    try {
+        let products = await productsModel.getProducts();
 
-    products = products.map(products=> {
-        if (products.img_id) {
-            const img = cloudinary.url(products.img_id);
-        return {
-            ...products,
-            img
-        }    
-        } else {
+        products = products.map(products=> {
+            if (products.img_id) {
+                const img = cloudinary.url(products.img_id);
             return {
                 ...products,
-                img: ''
+                img
+            }    
+            } else {
+                return {
+                    ...products,
+                    img: ''
+                }
             }
-        }
-    });
-    res.json(products)
+        });
+        res.json(products)
+    } catch (error) {
+        console.error('Error en la ruta /products:', error);
+        res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+    }
 });
 
 router.get('/products/:id', async (req, res, next) => {
@@ -43,7 +48,7 @@ router.get('/products/:id', async (req, res, next) => {
       res.json(productDetails);
     } catch (error) {
       console.error('Error en la ruta /products/:id:', error);
-      res.status(500).json({ error: 'Error interno del servidor' });
+      res.status(500).json({ error: 'Error interno del servidor', details: error.message });
     }
   });
 
@@ -83,27 +88,37 @@ router.get('/products/:id', async (req, res, next) => {
 
 
 router.get('/faq', async (req, res, next)=>{
-    let faq = await faqModel.getFaq();
+    try {
+        let faq = await faqModel.getFaq();
 
-    faq = faq.map(faq=> {    
-        return {
-            ...faq,
-            
-        }    
-    });
-    res.json(faq)
+        faq = faq.map(faq=> {    
+            return {
+                ...faq,
+                
+            }    
+        });
+        res.json(faq)
+    } catch (error) {
+        console.error('Error en la ruta /faq:', error);
+        res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+    }
 });
 
 router.get('/shipping', async (req, res, next)=>{
-    let shipp = await shippingModel.getShipp();
+    try {
+        let shipp = await shippingModel.getShipp();
 
-    shipp = shipp.map(shipp=> {    
-        return {
-            ...shipp,
-            
-        }    
-    });
-    res.json(shipp)
+        shipp = shipp.map(shipp=> {    
+            return {
+                ...shipp,
+                
+            }    
+        });
+        res.json(shipp)
+    } catch (error) {
+        console.error('Error en la ruta /shipping:', error);
+        res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+    }
 });
 
 
@@ -137,21 +152,26 @@ router.get('/images/:categoria', async (req, res, next) => {
       res.json(imagesCategory);
     } catch (error) {
         console.error('Error en la ruta /images/:categoria:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor', details: error.message });
     }
 
   });
 
   router.get('/testimonials', async (req, res, next)=>{
-    let testimonio = await TestimonioModel.getTestimonio();
+    try {
+        let testimonio = await TestimonioModel.getTestimonio();
 
-    testimonio = testimonio.map(testimonio=> {    
-        return {
-            ...testimonio,
-            
-        }    
-    });
-    res.json(testimonio)
+        testimonio = testimonio.map(testimonio=> {    
+            return {
+                ...testimonio,
+                
+            }    
+        });
+        res.json(testimonio)
+    } catch (error) {
+        console.error('Error en la ruta /testimonials:', error);
+        res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+    }
 });
 
 

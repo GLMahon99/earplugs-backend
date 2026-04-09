@@ -11,33 +11,37 @@ const destroy = util.promisify(cloudinary.uploader.destroy)
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
+  try {
+    var products = await productsModel.getProducts();
 
-  var products = await productsModel.getProducts();
-
-  products = products.map(product => {
-    if (product.img_id) {
-      const imagen = cloudinary.image(product.img_id, {
-        width: 65,
-        heigth: 65,
-        crop: 'fill'
-      });
-      return {
-        ...product,
-        imagen
+    products = products.map(product => {
+      if (product.img_id) {
+        const imagen = cloudinary.image(product.img_id, {
+          width: 65,
+          heigth: 65,
+          crop: 'fill'
+        });
+        return {
+          ...product,
+          imagen
+        }
+      } else {
+        return {
+          ...product,
+          imagen: ''
+        }
       }
-    } else {
-      return {
-        ...product,
-        imagen: ''
-      }
-    }
-  })
+    })
 
-  res.render('admin/products', {
-    layout:'admin/layout',
-    persona: req.session.nombre,
-    products
-});
+    res.render('admin/products', {
+      layout:'admin/layout',
+      persona: req.session.nombre,
+      products
+    });
+  } catch (error) {
+    console.error('Error en /admin/products:', error);
+    res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+  }
 });
 
 router.get('/add', (req,res,next)=> {
@@ -71,7 +75,7 @@ router.post('/add', async (req,res,next) => {
     }
   } catch (error) {
     console.log(error)
-    res.render('admin/add', {
+      res.render('admin/add', {
       layout: 'admin/layout',
         error: true,
         message: 'No se pudo cargar el producto, intente nuevamente.'
@@ -80,28 +84,38 @@ router.post('/add', async (req,res,next) => {
 })
 
 router.get('/delete/:id', async (req,res,next)=>{
-  var id = req.params.id;
+  try {
+    var id = req.params.id;
 
-  let product = await productsModel.getProductsById(id);
-  if (product.img_id) {
-    await (destroy(product.img_id))
+    let product = await productsModel.getProductsById(id);
+    if (product.img_id) {
+      await (destroy(product.img_id))
+    }
+
+    await productsModel.deleteProductsById(id);
+    res.redirect('/admin/products');
+  } catch (error) {
+    console.error('Error en /admin/products/delete/:id:', error);
+    res.status(500).json({ error: 'Error interno del servidor', details: error.message });
   }
-
-  await productsModel.deleteProductsById(id);
-  res.redirect('/admin/products');
 });
 
 
 
 router.get('/edit/:id', async (req,res,next)=>{
-  var id = req.params.id;
-  console.log(req.params.id);
-  var producto = await productsModel.getProductsById(id);
+  try {
+    var id = req.params.id;
+    console.log(req.params.id);
+    var producto = await productsModel.getProductsById(id);
 
-  res.render('admin/edit', {
-    layout: 'admin/layout',
-    producto
-  })
+    res.render('admin/edit', {
+      layout: 'admin/layout',
+      producto
+    })
+  } catch (error) {
+    console.error('Error en /admin/products/edit/:id:', error);
+    res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+  }
 })
 
 router.post('/edit', async (req,res,next) => {
