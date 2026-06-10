@@ -9,34 +9,133 @@
 </div><!-- End Page Title -->
 
 <div>
-    <table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Codigo </th>
-      <th scope="col"><i class="bi bi-image"></i></th>
-      <th scope="col">Stock</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Editar</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each products}}
-    <tr>
-      <td>{{codigo}}</td>
-      <td>{{{imagen}}}</td>
-      <td>{{stock}}</td>
-      <td><i class="bi bi-currency-dollar"></i>{{precio}}</td>
-      <td>
-        <a class="btn" href="/admin/products/edit/{{producto_id}}"><i class="bi bi-pencil-square"></i></a>
-        <a class="btn" href="/admin/products/delete/{{producto_id}}"><i class="bi bi-trash"></i></a>
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th scope="col">Codigo</th>
+        <th scope="col"><i class="bi bi-image"></i></th>
+        <th scope="col">Stock</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr>
+        <td>{{codigo}}</td>
+        <td>{{{imagen}}}</td>
+        <td>{{stock}}</td>
+        <td>
+          <div class="input-group input-group-sm" style="max-width: 140px;">
+            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+            <input type="number" class="form-control price-input" 
+                   data-id="{{producto_id}}" 
+                   value="{{precio}}" 
+                   step="0.01" 
+                   min="0"
+                   style="font-weight: 500;">
+            <button class="btn btn-outline-success save-price-btn" 
+                    type="button" 
+                    data-id="{{producto_id}}" 
+                    style="display: none;" 
+                    title="Guardar precio">
+              <i class="bi bi-check-lg"></i>
+            </button>
+          </div>
         </td>
-    </tr>
-    {{/each}}
-    
-  </tbody>
-</table>
-<a href="/admin/products/add" class="btn btn-success">
+        <td>
+          <a class="btn" href="/admin/products/edit/{{producto_id}}"><i class="bi bi-pencil-square"></i></a>
+          <a class="btn" href="/admin/products/delete/{{producto_id}}"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <a href="/admin/products/add" class="btn btn-success">
     Agregar producto
     <i class="bi bi-plus-square"></i>
-</a>
+  </a>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const priceInputs = document.querySelectorAll('.price-input');
+
+    priceInputs.forEach(input => {
+      const productId = input.getAttribute('data-id');
+      let originalValue = parseFloat(input.value);
+      const saveBtn = document.querySelector(`.save-price-btn[data-id="${productId}"]`);
+
+      // Mostrar botón de guardar si el precio cambia
+      input.addEventListener('input', function() {
+        const currentValue = parseFloat(input.value);
+        if (!isNaN(currentValue) && currentValue !== originalValue) {
+          saveBtn.style.display = 'inline-block';
+        } else {
+          saveBtn.style.display = 'none';
+        }
+      });
+
+      // Función para guardar el precio
+      async function savePrice() {
+        const newPrice = parseFloat(input.value);
+        if (isNaN(newPrice) || newPrice < 0) {
+          alert('Por favor ingrese un precio válido.');
+          return;
+        }
+
+        try {
+          saveBtn.disabled = true;
+          input.disabled = true;
+
+          const response = await fetch('/admin/products/update-price', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: productId,
+              precio: newPrice
+            })
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            originalValue = newPrice;
+            input.setAttribute('value', newPrice);
+            input.value = newPrice;
+            saveBtn.style.display = 'none';
+            
+            // Indicador visual de éxito
+            input.classList.add('is-valid');
+            setTimeout(() => {
+              input.classList.remove('is-valid');
+            }, 1500);
+          } else {
+            throw new Error(data.message || 'Error al actualizar el precio');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Error al actualizar el precio: ' + error.message);
+          input.value = originalValue;
+          saveBtn.style.display = 'none';
+        } finally {
+          saveBtn.disabled = false;
+          input.disabled = false;
+        }
+      }
+
+      // Guardar al hacer clic en el botón
+      saveBtn.addEventListener('click', savePrice);
+
+      // Guardar al presionar la tecla Enter
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          savePrice();
+        }
+      });
+    });
+  });
+</script>

@@ -170,4 +170,21 @@ router.post('/edit', async (req,res,next) => {
 })
 
 
+router.post('/update-price', async (req, res) => {
+  try {
+    const { id, precio } = req.body;
+    
+    if (!id || precio === undefined || isNaN(precio) || precio < 0) {
+      return res.status(400).json({ success: false, message: 'Datos inválidos' });
+    }
+
+    await productsModel.editProductsById({ precio }, id);
+    res.json({ success: true, message: 'Precio actualizado correctamente' });
+  } catch (error) {
+    console.error('Error en /admin/products/update-price:', error);
+    res.status(500).json({ success: false, message: 'Error interno del servidor', details: error.message });
+  }
+});
+
+
 module.exports = router;
