@@ -105,6 +105,27 @@ async function deleteClient(id) {
     }
 }
 
+async function getEmployeeByUsername(usuario) {
+    try {
+        const query = 'SELECT * FROM usuarios WHERE usuario = ? AND rol="empleado" LIMIT 1';
+        const [rows] = await pool.query(query, [usuario]);
+        return rows[0];
+    } catch (error) {
+        console.error('Error in getEmployeeByUsername:', error);
+        throw error;
+    }
+}
+
+async function updateEmployeePassword(id, hashedPassword) {
+    try {
+        const query = 'UPDATE usuarios SET password = ? WHERE id = ?';
+        await pool.query(query, [hashedPassword, id]);
+    } catch (error) {
+        console.error('Error in updateEmployeePassword:', error);
+        throw error;
+    }
+}
+
 module.exports = {
     getUserByUsernameAndPassword,
     getClientByEmailAndPassword,
@@ -112,5 +133,7 @@ module.exports = {
     getClientById,
     getAllClients,
     getSalesByClientsById,
-    deleteClient
+    deleteClient,
+    getEmployeeByUsername,
+    updateEmployeePassword
 };
