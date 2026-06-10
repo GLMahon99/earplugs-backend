@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
 router.post("/delete/:id", async (req, res) => {
   try {
     await usuariosModel.deleteClient(req.params.id);
-    res.redirect("admin/clients");
+    res.redirect("/admin/clients");
   } catch (err) {
     console.error("Error al eliminar cliente:", err);
     res.status(500).send("Error al eliminar cliente");
