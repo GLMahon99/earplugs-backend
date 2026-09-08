@@ -18,11 +18,22 @@
                     <div class="col d-flex justify-content-center"><i class="bi bi-envelope">{{client.email}}</i></div>
                 </div>
                 <div class="row container mb-3">
-                    <div class="detail-sale" >
-                        <div class="d-flex justify-content-between mb-1">
-                            <h4>Detalle</h4>
-                            <h6>{{forma_pago}}</h6>
-                            <button class="printButton btn btn-warning" data-print-id="printSection-{{pedido_id}}"><i class="bi bi-printer"></i></button>
+                    <div class="detail-sale">
+                        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <h4 class="mb-0">Detalle</h4>
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis px-2 py-1">{{forma_pago}}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-primary btn-sm btn-shipping-label d-inline-flex align-items-center gap-1 shadow-sm" data-sale-id="{{pedido_id}}" title="Imprimir Etiqueta de Envío">
+                                    <i class="bi bi-tag-fill"></i>
+                                    <span>Etiqueta de Envío</span>
+                                </button>
+                                <button class="printButton btn btn-warning btn-sm d-inline-flex align-items-center gap-1 shadow-sm" data-print-id="printSection-{{pedido_id}}" title="Imprimir Recibo de Venta">
+                                    <i class="bi bi-printer"></i>
+                                    <span>Recibo</span>
+                                </button>
+                            </div>
                         </div>
                         {{!-- Recorrido del detail --}}
                         {{#each detalle}}
@@ -116,7 +127,7 @@
                     <form action="/admin/sales/editState" method="post">
                         <input type="hidden" value="{{pedido_id}}" name="id" />
                         <input type="hidden" value="{{client.id}}" name="clientId" />
-                        <strong >Estado:</strong> <span class="state">{{estado}}</span>
+                        <strong>Estado:</strong> <span class="state">{{estado}}</span>
                         <div class="selector-state ">
                             <select name="estado" class="form-select my-1">
                             <option value="aprobado">Aprobar</option>
@@ -124,52 +135,482 @@
                         </select>
                         <button type="submit" class="btn mx-2" id="button-state-acept">Actualizar estado</button>
                         </div>
-                        
                     </form>
+                </div>
+
+                {{!-- Plantilla Oculta de Etiqueta de Envío Moderna para este Pedido --}}
+                <div id="shippingLabel-{{pedido_id}}" class="d-none">
+                    <div class="shipping-label-cut-guide">
+                        <div class="shipping-label-card">
+                            <!-- Cabecera con Logo y Datos de Orden -->
+                            <div class="shipping-label-header">
+                                <div class="shipping-brand">
+                                    <div class="shipping-brand-logo">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11000 15300" style="width: 32px; height: 32px; fill: #174b87;">
+                                            <path d="M3801 10431c-25,-43 -140,-162 -189,-224 -568,-713 -721,-931 -1213,-1794 -941,-1651 -1118,-3734 106,-5267 474,-594 1073,-1095 2041,-1383 953,-283 2036,-219 2850,226 486,266 877,580 1176,975 179,235 361,512 473,798 372,945 298,2037 -311,2658 -389,396 -691,352 -1368,353 -539,1 -1179,-33 -1708,-2l9 1589c567,23 1178,1 1751,1 633,0 997,25 1533,-219 752,-342 1304,-993 1617,-1884 621,-1771 -196,-3880 -1595,-4990 -1417,-1124 -3434,-1527 -5435,-691 -1543,645 -2772,2001 -3220,3781 -536,2126 382,4095 1384,5322 129,158 263,328 391,492 257,328 762,831 1044,1159 360,420 633,697 986,1219l691 1045c272,385 480,701 797,966 294,245 698,491 1206,562 954,133 1634,-191 2181,-867 676,-835 969,-2839 -10,-3535 -685,-487 -1208,541 -1116,671 160,228 -46,560 -657,450 -861,-154 -1686,-932 -2184,-1551 -346,-431 -663,-912 -893,-1570 -241,-689 -295,-1436 -150,-2198 326,-1715 1921,-2955 3550,-2525 427,113 521,221 811,405 -177,-413 -588,-823 -929,-1039 -1427,-904 -3151,-263 -4015,1047 -558,846 -839,1928 -668,3198 115,858 387,1474 744,2209 59,122 302,539 319,612z"/>
+                                            <path d="M5687 7565l0 795c-185,0 -335,-356 -335,-795 0,-439 150,-795 335,-795l0 795z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="shipping-brand-text">
+                                        <div class="shipping-brand-title">Earplugs.</div>
+                                        <div class="shipping-brand-sub">Tienda Oficial</div>
+                                    </div>
+                                </div>
+                                <div class="shipping-header-meta">
+                                    <span class="shipping-badge-type">Envío a Domicilio</span>
+                                    <div class="shipping-order-id">ORD #{{pedido_id}}</div>
+                                    <div class="shipping-order-date">{{fecha_pedido}}</div>
+                                </div>
+                            </div>
+
+                            <!-- Código de Barras / Tracking -->
+                            <div class="shipping-barcode-wrap">
+                                <div class="shipping-barcode-lines">
+                                    <span style="width: 4px;"></span>
+                                    <span style="width: 2px;"></span>
+                                    <span style="width: 6px;"></span>
+                                    <span style="width: 1px;"></span>
+                                    <span style="width: 5px;"></span>
+                                    <span style="width: 3px;"></span>
+                                    <span style="width: 2px;"></span>
+                                    <span style="width: 7px;"></span>
+                                    <span style="width: 2px;"></span>
+                                    <span style="width: 4px;"></span>
+                                    <span style="width: 1px;"></span>
+                                    <span style="width: 6px;"></span>
+                                    <span style="width: 3px;"></span>
+                                    <span style="width: 5px;"></span>
+                                    <span style="width: 2px;"></span>
+                                    <span style="width: 4px;"></span>
+                                    <span style="width: 6px;"></span>
+                                    <span style="width: 2px;"></span>
+                                    <span style="width: 5px;"></span>
+                                    <span style="width: 3px;"></span>
+                                    <span style="width: 1px;"></span>
+                                    <span style="width: 7px;"></span>
+                                    <span style="width: 4px;"></span>
+                                    <span style="width: 2px;"></span>
+                                    <span style="width: 5px;"></span>
+                                </div>
+                                <div class="shipping-tracking-text">EP-AR-{{pedido_id}}-{{cp}}</div>
+                            </div>
+
+                            <!-- Bloque Destinatario (Datos Personales y de Entrega) -->
+                            <div class="shipping-recipient-box">
+                                <div class="shipping-section-title">
+                                    <span><i class="bi bi-box-seam me-1"></i> Destinatario</span>
+                                    <small style="color: #64748b; font-weight: 600;">ENTREGA DIRECTA</small>
+                                </div>
+                                <div class="shipping-recipient-name">
+                                    {{client.nombre}} {{client.apellido}}
+                                </div>
+                                <div class="shipping-recipient-meta">
+                                    {{#if client.numero_identificacion}}
+                                    <span><strong>{{client.tipo_identificacion}}:</strong> {{client.numero_identificacion}}</span>
+                                    {{/if}}
+                                    {{#if client.telefono}}
+                                    <span><i class="bi bi-telephone me-1"></i>{{client.telefono}}</span>
+                                    {{/if}}
+                                    {{#if client.email}}
+                                    <span><i class="bi bi-envelope me-1"></i>{{client.email}}</span>
+                                    {{/if}}
+                                </div>
+                                <div class="shipping-recipient-address">
+                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{direccion_entrega}}
+                                </div>
+                                <div class="shipping-recipient-extra">
+                                    {{#if piso}}<span><strong>Piso:</strong> {{piso}}</span> &nbsp;{{/if}}
+                                    {{#if puerta}}<span><strong>Puerta/Depto:</strong> {{puerta}}</span> &nbsp;{{/if}}
+                                    {{#if tipo_vivienda}}<span><strong>Vivienda:</strong> {{tipo_vivienda}}</span>{{/if}}
+                                </div>
+                                <div class="shipping-location-box">
+                                    <div class="shipping-location-city">
+                                        <i class="bi bi-building me-1"></i>{{localidad}}
+                                    </div>
+                                    <div class="shipping-location-cp">
+                                        CP {{cp}}
+                                    </div>
+                                </div>
+                                {{#if observacion}}
+                                <div class="shipping-obs-box">
+                                    <strong><i class="bi bi-info-circle-fill me-1"></i>Obs:</strong> {{observacion}}
+                                </div>
+                                {{/if}}
+                            </div>
+
+                            <!-- Bloque Remitente -->
+                            <div class="shipping-sender-box">
+                                <div class="shipping-sender-title">Remitente:</div>
+                                <div class="shipping-sender-name">Earplugs Argentina (Oficial)</div>
+                                <div>contacto@earplugs.com.ar | Buenos Aires, Argentina</div>
+                            </div>
+
+                            <!-- Footer de Etiqueta -->
+                            <div class="shipping-label-footer">
+                                <span class="shipping-fragile-badge">
+                                    <i class="bi bi-exclamation-triangle-fill"></i> FRÁGIL - CUIDADO
+                                </span>
+                                <span class="shipping-package-info">
+                                    Bulto 1 / 1 &nbsp;|&nbsp; Earplugs Logistics
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             {{/each}}
   </div>
 </div><!-- End Page Title -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+
+<!-- Modal de Vista Previa de Etiqueta de Envío -->
+<div class="modal fade" id="shippingLabelModal" tabindex="-1" aria-labelledby="shippingLabelModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold" id="shippingLabelModalLabel">
+          <i class="bi bi-tag-fill text-primary me-2"></i>Etiqueta de Envío
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center p-4" id="modalShippingLabelContent">
+        <!-- Contenido dinámico de la etiqueta -->
+      </div>
+      <div class="modal-footer bg-light justify-content-between">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmPrintShippingLabel">
+          <i class="bi bi-printer-fill me-1"></i> Imprimir Etiqueta
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let currentPrintLabelHtml = '';
+
+    // Manejo de botones de Etiqueta de Envío
+    const labelModalEl = document.getElementById('shippingLabelModal');
+    const labelModal = labelModalEl ? new bootstrap.Modal(labelModalEl) : null;
+    const modalContent = document.getElementById('modalShippingLabelContent');
+    const btnConfirmPrint = document.getElementById('btnConfirmPrintShippingLabel');
+
+    document.querySelectorAll('.btn-shipping-label').forEach(button => {
+        button.addEventListener('click', function () {
+            const saleId = button.getAttribute('data-sale-id');
+            const labelContainer = document.getElementById(`shippingLabel-${saleId}`);
+            if (labelContainer) {
+                currentPrintLabelHtml = labelContainer.innerHTML;
+                if (modalContent) {
+                    modalContent.innerHTML = currentPrintLabelHtml;
+                }
+                if (labelModal) {
+                    labelModal.show();
+                }
+            }
+        });
+    });
+
+    // Función de impresión limpia y directa de la etiqueta
+    function printShippingLabelContent(htmlContent) {
+        const printIframe = document.createElement('iframe');
+        printIframe.style.position = 'fixed';
+        printIframe.style.right = '0';
+        printIframe.style.bottom = '0';
+        printIframe.style.width = '0';
+        printIframe.style.height = '0';
+        printIframe.style.border = '0';
+        document.body.appendChild(printIframe);
+
+        const frameDoc = printIframe.contentWindow || printIframe.contentDocument.document || printIframe.contentDocument;
+        frameDoc.document.open();
+        frameDoc.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Etiqueta de Envío - Earplugs</title>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+                <style>
+                    @page {
+                        size: 100mm 150mm;
+                        margin: 4mm;
+                    }
+                    * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    body {
+                        background: #ffffff;
+                        color: #0f172a;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                        padding: 5px;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                    }
+                    .shipping-label-cut-guide {
+                        width: 100%;
+                        display: block;
+                    }
+                    .shipping-label-card {
+                        background-color: #ffffff;
+                        color: #0f172a;
+                        width: 100%;
+                        border: 2px solid #0f172a;
+                        border-radius: 8px;
+                        padding: 12px;
+                    }
+                    .shipping-label-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-bottom: 2px solid #0f172a;
+                        padding-bottom: 8px;
+                        margin-bottom: 8px;
+                    }
+                    .shipping-brand {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    .shipping-brand-logo svg {
+                        width: 30px;
+                        height: 30px;
+                    }
+                    .shipping-brand-title {
+                        font-size: 16px;
+                        font-weight: 800;
+                        color: #174b87;
+                        line-height: 1;
+                    }
+                    .shipping-brand-sub {
+                        font-size: 9px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.8px;
+                        color: #64748b;
+                        font-weight: 600;
+                    }
+                    .shipping-header-meta {
+                        text-align: right;
+                    }
+                    .shipping-badge-type {
+                        display: inline-block;
+                        background: #0f172a;
+                        color: #ffffff;
+                        font-size: 9px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                    }
+                    .shipping-order-id {
+                        font-family: monospace;
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: #0f172a;
+                    }
+                    .shipping-order-date {
+                        font-size: 9px;
+                        color: #64748b;
+                    }
+                    .shipping-barcode-wrap {
+                        text-align: center;
+                        padding: 6px 0;
+                        border-bottom: 1.5px dashed #cbd5e1;
+                        margin-bottom: 8px;
+                    }
+                    .shipping-barcode-lines {
+                        height: 34px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: stretch;
+                        gap: 2px;
+                        margin: 0 auto 3px auto;
+                        width: 85%;
+                    }
+                    .shipping-barcode-lines span {
+                        background-color: #0f172a;
+                    }
+                    .shipping-tracking-text {
+                        font-family: monospace;
+                        font-size: 11px;
+                        font-weight: 700;
+                        letter-spacing: 2px;
+                        color: #0f172a;
+                    }
+                    .shipping-recipient-box {
+                        border: 2px solid #0f172a;
+                        border-radius: 6px;
+                        padding: 8px 10px;
+                        margin-bottom: 8px;
+                        background: #ffffff;
+                    }
+                    .shipping-section-title {
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 10px;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                        border-bottom: 1px solid #e2e8f0;
+                        padding-bottom: 3px;
+                        margin-bottom: 6px;
+                    }
+                    .shipping-recipient-name {
+                        font-size: 16px;
+                        font-weight: 800;
+                        color: #0f172a;
+                        margin-bottom: 3px;
+                    }
+                    .shipping-recipient-meta {
+                        font-size: 11px;
+                        color: #334155;
+                        margin-bottom: 5px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                    }
+                    .shipping-recipient-address {
+                        font-size: 13px;
+                        font-weight: 700;
+                        color: #0f172a;
+                        margin-bottom: 3px;
+                    }
+                    .shipping-recipient-extra {
+                        font-size: 11px;
+                        color: #475569;
+                        margin-bottom: 4px;
+                    }
+                    .shipping-location-box {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background: #f1f5f9;
+                        padding: 5px 8px;
+                        border-radius: 4px;
+                        margin-top: 4px;
+                        border: 1px solid #e2e8f0;
+                    }
+                    .shipping-location-city {
+                        font-size: 12px;
+                        font-weight: 700;
+                    }
+                    .shipping-location-cp {
+                        font-size: 13px;
+                        font-weight: 800;
+                        color: #174b87;
+                        background: #ffffff;
+                        padding: 1px 6px;
+                        border-radius: 3px;
+                        border: 1px solid #174b87;
+                        font-family: monospace;
+                    }
+                    .shipping-obs-box {
+                        background: #fffbeb;
+                        border: 1px dashed #f59e0b;
+                        border-radius: 4px;
+                        padding: 4px 6px;
+                        font-size: 10px;
+                        color: #92400e;
+                        margin-top: 6px;
+                    }
+                    .shipping-sender-box {
+                        border: 1px solid #cbd5e1;
+                        border-radius: 5px;
+                        padding: 6px 8px;
+                        margin-bottom: 8px;
+                        background: #f8fafc;
+                        font-size: 10px;
+                        color: #475569;
+                    }
+                    .shipping-sender-title {
+                        font-size: 9px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        color: #64748b;
+                    }
+                    .shipping-sender-name {
+                        font-weight: 700;
+                        color: #0f172a;
+                    }
+                    .shipping-label-footer {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-top: 1.5px solid #0f172a;
+                        padding-top: 6px;
+                        font-size: 10px;
+                        font-weight: 700;
+                    }
+                    .shipping-fragile-badge {
+                        background: #fee2e2;
+                        color: #991b1b;
+                        border: 1px solid #ef4444;
+                        padding: 2px 6px;
+                        border-radius: 3px;
+                        font-size: 9px;
+                        font-weight: 800;
+                    }
+                </style>
+            </head>
+            <body>
+                ${htmlContent}
+            </body>
+            </html>
+        `);
+        frameDoc.document.close();
+
+        setTimeout(() => {
+            printIframe.contentWindow.focus();
+            printIframe.contentWindow.print();
+            setTimeout(() => {
+                document.body.removeChild(printIframe);
+            }, 1000);
+        }, 300);
+    }
+
+    if (btnConfirmPrint) {
+        btnConfirmPrint.addEventListener('click', function () {
+            if (currentPrintLabelHtml) {
+                printShippingLabelContent(currentPrintLabelHtml);
+            }
+        });
+    }
+
+    // Manejo de botones de impresión de recibos estándar
     document.querySelectorAll('.printButton').forEach(button => {
         button.addEventListener('click', function () {
             const printId = button.getAttribute('data-print-id');
-            const printContent = document.getElementById(printId).innerHTML;
-            const originalContent = document.body.innerHTML;
+            const printElement = document.getElementById(printId);
+            if (printElement) {
+                const printContent = printElement.innerHTML;
+                const originalContent = document.body.innerHTML;
 
-            document.body.innerHTML = printContent;
-            window.print();
-            document.body.innerHTML = originalContent;
-            location.reload(); // Refresh to restore the original content
+                document.body.innerHTML = printContent;
+                window.print();
+                document.body.innerHTML = originalContent;
+                location.reload();
+            }
         });
     });
 });
 
 const containerState = document.querySelectorAll('.container-state');
 containerState.forEach((elemento) => {
-  const state = elemento.querySelector('.state'); // Supongamos que tienes un elemento con clase "state"
+  const state = elemento.querySelector('.state');
   const selectorState = elemento.querySelector('.selector-state');
 
-  console.log("este es el estado:" , state);
-
   if (state && state.textContent.trim() !== 'pendiente' && state.textContent.trim() === 'aprobado') {
-    selectorState.style.display = 'none'; // Oculta el elemento si el estado no es "pendiente"
+    selectorState.style.display = 'none';
     state.style.color = 'green';
-  }else if (state && state.textContent.trim() !== 'pendiente' && state.textContent.trim() === 'rechazado') {
-       selectorState.style.display = 'none'; 
-       state.style.color = 'red';
-    } 
+  } else if (state && state.textContent.trim() !== 'pendiente' && state.textContent.trim() === 'rechazado') {
+    selectorState.style.display = 'none'; 
+    state.style.color = 'red';
+  } 
 });
 
 const dataSale = document.querySelectorAll('.container-data-sale');
 dataSale.forEach((e) => {
     let commission = e.querySelector('.price-sale');
-    
-})
-
-
-
-
-    </script>
+});
+</script>

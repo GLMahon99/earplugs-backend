@@ -1434,3 +1434,311 @@
     font-size: 13px;
     color: #012970;
   }
+
+  /*--------------------------------------------------------------
+  # Shipping Label Styles (Etiqueta de Envío Moderna)
+  --------------------------------------------------------------*/
+  .shipping-label-card {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    border: 2px solid #0f172a;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .shipping-label-cut-guide {
+    position: relative;
+    padding: 6px;
+    border: 1px dashed #94a3b8;
+    border-radius: 14px;
+    background: #f8fafc;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .shipping-label-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .shipping-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .shipping-brand-logo svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .shipping-brand-text {
+    line-height: 1.1;
+  }
+
+  .shipping-brand-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #174b87;
+    margin: 0;
+  }
+
+  .shipping-brand-sub {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .shipping-header-meta {
+    text-align: right;
+  }
+
+  .shipping-badge-type {
+    display: inline-block;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+
+  .shipping-order-id {
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .shipping-order-date {
+    font-size: 10px;
+    color: #64748b;
+  }
+
+  /* Barcode section */
+  .shipping-barcode-wrap {
+    text-align: center;
+    padding: 8px 0;
+    border-bottom: 1.5px dashed #cbd5e1;
+    margin-bottom: 12px;
+  }
+
+  .shipping-barcode-lines {
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2px;
+    margin: 0 auto 4px auto;
+    width: 85%;
+  }
+
+  .shipping-barcode-lines span {
+    background-color: #0f172a;
+    border-radius: 1px;
+  }
+
+  .shipping-tracking-text {
+    font-family: monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #0f172a;
+  }
+
+  /* Recipient Box */
+  .shipping-recipient-box {
+    border: 2px solid #0f172a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: #ffffff;
+  }
+
+  .shipping-section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+
+  .shipping-recipient-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .shipping-recipient-meta {
+    font-size: 12px;
+    color: #334155;
+    margin-bottom: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .shipping-recipient-address {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .shipping-recipient-extra {
+    font-size: 12px;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+
+  .shipping-location-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-top: 6px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .shipping-location-city {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .shipping-location-cp {
+    font-size: 14px;
+    font-weight: 800;
+    color: #174b87;
+    background: #ffffff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1.5px solid #174b87;
+    font-family: monospace;
+  }
+
+  .shipping-obs-box {
+    background: #fffbeb;
+    border: 1px dashed #f59e0b;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 11px;
+    color: #92400e;
+    margin-top: 8px;
+  }
+
+  /* Sender Box */
+  .shipping-sender-box {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    background: #f8fafc;
+    font-size: 11px;
+    color: #475569;
+  }
+
+  .shipping-sender-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 2px;
+  }
+
+  .shipping-sender-name {
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  /* Footer Tags */
+  .shipping-label-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1.5px solid #0f172a;
+    padding-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .shipping-fragile-badge {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .shipping-package-info {
+    color: #475569;
+    font-size: 11px;
+  }
+
+  /* Print specific rules */
+  @media print {
+    body * {
+      visibility: hidden !important;
+    }
+    .modal, .modal-backdrop {
+      display: none !important;
+    }
+    .printable-shipping-label,
+    .printable-shipping-label * {
+      visibility: visible !important;
+    }
+    .printable-shipping-label {
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+    }
+    .shipping-label-card {
+      box-shadow: none !important;
+      border: 2px solid #000000 !important;
+      max-width: 100% !important;
+      page-break-inside: avoid !important;
+    }
+    .shipping-label-cut-guide {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+  }
